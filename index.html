@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Made Esthetic — Agenda Real</title>
+<style>
+:root{
+  --bg:#0d0f1a;--bg2:#13162b;--bg3:#1a1e35;--card:#171b2e;--border:#252a45;
+  --accent:#7c6af5;--blue:#38bdf8;--green:#22c55e;--orange:#f97316;
+  --red:#ef4444;--gold:#fbbf24;--pink:#f472b6;--purple:#a78bfa;
+  --text:#e8eaf6;--text2:#8b90b8;--text3:#4a5070;
+  --r:14px;--r-sm:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* HEADER */
+header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),#5b8af5);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo h1{font-size:16px;font-weight:800;letter-spacing:-.3px}
+.logo span{font-size:11px;color:var(--text2)}
+.header-meta{display:flex;align-items:center;gap:14px}
+.live{display:flex;align-items:center;gap:5px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--green);font-weight:700}
+.live-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+#clock{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+.update-tag{font-size:11px;color:var(--text3);white-space:nowrap}
+
+/* ALERT BANNER */
+.alert-banner{background:rgba(249,115,22,.08);border-bottom:1px solid rgba(249,115,22,.2);padding:8px 20px;display:flex;align-items:center;gap:8px;font-size:12px;flex-wrap:wrap;gap:12px}
+.alert-pill{display:flex;align-items:center;gap:5px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;color:var(--red)}
+.alert-pill.warn{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.2);color:var(--gold)}
+.alert-pill.good{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.2);color:var(--green)}
+
+/* TABS */
+.tabs{display:flex;gap:2px;padding:14px 20px 0;border-bottom:1px solid var(--border);overflow-x:auto}
+.tab{padding:8px 16px;border-radius:var(--r-sm) var(--r-sm) 0 0;font-size:13px;font-weight:600;cursor:pointer;border:1px solid transparent;border-bottom:none;color:var(--text2);background:transparent;transition:.15s;white-space:nowrap}
+.tab.active{background:var(--bg2);border-color:var(--border);color:var(--text)}
+.tab:hover:not(.active){color:var(--text)}
+
+/* CONTENT */
+.content{padding:20px}
+.view{display:none}
+.view.active{display:block}
+
+/* SECTION HEADER */
+.sec-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.sec-h h2{font-size:15px;font-weight:700}
+.sec-h p{font-size:12px;color:var(--text2)}
+
+/* INSIGHT CARDS */
+.insights{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:24px}
+.ins-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.ins-card .num{font-size:32px;font-weight:800;line-height:1}
+.ins-card .lbl{font-size:11px;color:var(--text2);margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+.ins-card .sub{font-size:12px;color:var(--text3);margin-top:6px}
+
+/* WEEKLY HEATMAP */
+.heatmap{overflow-x:auto;margin-bottom:24px}
+.hm-table{min-width:680px;border-collapse:collapse;width:100%}
+.hm-table th{background:var(--bg2);padding:9px 12px;font-size:11px;color:var(--text2);text-align:left;border:1px solid var(--border);font-weight:600;white-space:nowrap}
+.hm-table td{padding:8px 10px;border:1px solid var(--border);vertical-align:middle}
+.surgeon-cell{display:flex;align-items:center;gap:8px;min-width:160px}
+.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.surgeon-nm{font-size:12px;font-weight:700;white-space:nowrap}
+.surgeon-sp{font-size:10px;color:var(--text2)}
+.heat-cell{text-align:center;font-size:13px;font-weight:800;border-radius:6px;padding:6px 8px;margin:2px;cursor:default}
+.heat-0{background:rgba(239,68,68,.08);color:rgba(239,68,68,.5)}
+.heat-low{background:rgba(249,115,22,.12);color:var(--orange)}
+.heat-mid{background:rgba(251,191,36,.12);color:var(--gold)}
+.heat-hi{background:rgba(34,197,94,.12);color:var(--green)}
+.heat-full{background:rgba(34,197,94,.2);color:var(--green);box-shadow:0 0 8px rgba(34,197,94,.15)}
+.need-content{font-size:9px;font-weight:700;background:rgba(239,68,68,.15);color:var(--red);border-radius:4px;padding:2px 5px;margin-left:4px}
+
+/* SURGEON CARDS */
+.surgeons-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.scard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;transition:border-color .2s}
+.scard:hover{border-color:var(--accent)}
+.scard-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px}
+.scard-info{flex:1}
+.scard-name{font-size:13px;font-weight:700}
+.scard-spec{font-size:11px;color:var(--text2);margin-top:2px}
+.scard-suc{font-size:10px;color:var(--text3);margin-top:2px}
+.content-badge{padding:3px 8px;border-radius:12px;font-size:10px;font-weight:800;white-space:nowrap}
+.badge-alert{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.badge-warn{background:rgba(251,191,36,.1);color:var(--gold);border:1px solid rgba(251,191,36,.25)}
+.badge-ok{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.25)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.kpi{background:var(--bg3);border-radius:var(--r-sm);padding:8px 6px;text-align:center}
+.kpi .v{font-size:17px;font-weight:800;line-height:1}
+.kpi .l{font-size:9px;color:var(--text2);margin-top:3px;text-transform:uppercase;letter-spacing:.3px}
+.week-bar{margin-bottom:10px}
+.week-bar-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:4px}
+.bar-wrap{background:var(--bg3);border-radius:4px;height:7px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .4s}
+
+/* HOY LIST */
+.hoy-list{display:flex;flex-direction:column;gap:4px;max-height:160px;overflow-y:auto}
+.hoy-row{display:flex;align-items:center;gap:8px;background:var(--bg3);border-radius:6px;padding:6px 9px;font-size:11px;border-left:3px solid var(--border)}
+.hoy-row.estado-agendado{border-left-color:var(--accent)}
+.hoy-row.estado-otro{border-left-color:var(--text3)}
+.hoy-row.estado-anulado{border-left-color:var(--red);opacity:.6}
+.hoy-hora{font-weight:700;color:var(--text2);min-width:40px;font-variant-numeric:tabular-nums}
+.hoy-pac{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hoy-motivo{font-size:10px;color:var(--text3);white-space:nowrap}
+.empty-msg{font-size:12px;color:var(--text3);text-align:center;padding:16px 0}
+
+/* CONVERSION TABLE */
+.conv-table{width:100%;border-collapse:collapse}
+.conv-table th{padding:10px 14px;text-align:left;font-size:11px;color:var(--text2);font-weight:600;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.4px}
+.conv-table td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px}
+.conv-table tr:last-child td{border-bottom:none}
+.conv-table tr:hover td{background:rgba(255,255,255,.02)}
+.conv-bar-wrap{width:80px;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle;margin-right:8px}
+.conv-bar-fill{height:100%;border-radius:3px}
+.rank-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.rank-1{background:rgba(251,191,36,.2);color:var(--gold)}
+.rank-2{background:rgba(156,163,175,.15);color:#9ca3af}
+.rank-3{background:rgba(180,120,80,.15);color:#b47850}
+.rank-n{background:var(--bg3);color:var(--text3)}
+
+/* ALERT CARDS */
+.alert-cards{display:flex;flex-direction:column;gap:10px}
+.acard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+.acard.urgent{border-left:3px solid var(--red)}
+.acard.warn{border-left:3px solid var(--gold)}
+.acard.info{border-left:3px solid var(--blue)}
+.acard .ai{font-size:22px;flex-shrink:0}
+.acard .at{font-size:14px;font-weight:700}
+.acard .ad{font-size:12px;color:var(--text2);margin-top:3px}
+.acard .as{font-size:11px;color:var(--text3);margin-top:5px}
+
+/* TOOLTIP */
+[title]{cursor:help}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* SUCURSAL FILTER CHIPS */
+.suc-filter{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.suc-chip{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);color:var(--text2);background:transparent;transition:.15s;white-space:nowrap}
+.suc-chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.suc-chip:hover:not(.active){border-color:var(--text2);color:var(--text)}
+
+/* SUCURSAL TABLE */
+.suc-table{width:100%;border-collapse:collapse}
+.suc-table th{padding:10px 14px;text-align:left;font-size:11px;color:var(--text2);font-weight:600;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+.suc-table td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+.suc-table tr:last-child td{border-bottom:none}
+.suc-table tr:hover td{background:rgba(255,255,255,.02)}
+.suc-cir-row{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.suc-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;cursor:help;flex-shrink:0}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  header{padding:0 14px}
+  .content{padding:14px}
+  .tabs{padding:12px 14px 0}
+  .surgeons-grid{grid-template-columns:1fr}
+  .insights{grid-template-columns:1fr 1fr}
+  .hm-table{min-width:520px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">✦</div>
+    <div>
+      <h1>Made Esthetic</h1>
+      <span>Control de Agenda — Cirugía Plástica</span>
+    </div>
+  </div>
+  <div class="header-meta">
+    <div class="live"><div class="live-dot"></div>EN VIVO</div>
+    <div>
+      <div id="clock">--:--:--</div>
+      <div class="update-tag" id="update-tag-main">Datos: Medilink 10/06/2026</div>
+      <div id="live-status" style="font-size:10px;color:var(--gold);margin-top:2px">🔄 Cargando live...</div>
+    </div>
+  </div>
+</header>
+
+<div class="alert-banner" id="alert-banner"></div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('resumen')">📊 Resumen</button>
+  <button class="tab" onclick="showTab('semanal')">📅 Vista Semanal</button>
+  <button class="tab" onclick="showTab('cirujanos')">👨‍⚕️ Cirujanos</button>
+  <button class="tab" onclick="showTab('conversion')">📈 Conversión</button>
+  <button class="tab" onclick="showTab('canales')">📡 Canales</button>
+  <button class="tab" onclick="showTab('ytd2026')">📊 2026 YTD</button>
+  <button class="tab" onclick="showTab('sucursales')">🏥 Sucursales</button>
+  <button class="tab" onclick="showTab('embudo')">🔄 Embudo</button>
+</div>
+
+<div class="content">
+
+<!-- RESUMEN -->
+<div id="view-resumen" class="view active">
+  <div id="insight-cards" class="insights"></div>
+  <div class="sec-h">
+    <div>
+      <h2>🚦 Estado de Agendas — Semana Actual</h2>
+      <p>Citas activas esta semana. Rojo = agenda vacía → necesita contenido.</p>
+    </div>
+  </div>
+  <div id="resumen-grid" class="surgeons-grid"></div>
+</div>
+
+<!-- SEMANAL -->
+<div id="view-semanal" class="view">
+  <div class="sec-h">
+    <div>
+      <h2>📅 Mapa de Agenda Semanal</h2>
+      <p>Cantidad de citas S1 por cirujano por semana. Verde = llena · Rojo = vacía · Datos hasta semana actual.</p>
+    </div>
+  </div>
+  <div id="semanal-suc-filter" class="suc-filter"></div>
+  <div class="heatmap">
+    <table class="hm-table" id="hm-table"></table>
+  </div>
+</div>
+
+<!-- CIRUJANOS -->
+<div id="view-cirujanos" class="view">
+  <div class="sec-h">
+    <div>
+      <h2>👨‍⚕️ Detalle por Cirujano</h2>
+      <p>Estadísticas históricas Ene 2025 – Nov 2026 · 31.222 registros procesados</p>
+    </div>
+  </div>
+  <div id="suc-filter" class="suc-filter"></div>
+  <div class="surgeons-grid" id="detail-grid"></div>
+</div>
+
+<!-- CONVERSIÓN -->
+<div id="view-conversion" class="view">
+  <div class="sec-h">
+    <div>
+      <h2>📈 Ranking de Conversión</h2>
+      <p>Evaluaciones agendadas que terminaron siendo atendidas</p>
+    </div>
+  </div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
+    <div style="overflow-x:auto"><table class="conv-table" id="conv-table"></table></div>
+  </div>
+</div>
+
+<!-- CANALES -->
+<div id="view-canales" class="view">
+  <div class="sec-h">
+    <div>
+      <h2>📡 Adquisición de Nuevos Pacientes — Cirugía Plástica 2026</h2>
+      <p>Solo primeras consultas · 1,037 nuevos pacientes Ene–Jun 2026 · agrupado por canal y persona que agenda</p>
+    </div>
+  </div>
+  <div id="canal-summary" class="insights" style="margin-bottom:20px"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px">
+      <div style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:14px">Consultas S1 por canal — Ene–Dic 2026 (CP)</div>
+      <div id="canal-chart"></div>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px">
+      <div style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:14px">Participación % por canal (Ene–Jun 2026)</div>
+      <div id="canal-pct-chart"></div>
+    </div>
+  </div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:20px">
+    <div style="padding:14px 16px;border-bottom:1px solid var(--border)">
+      <div style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px">Canal S1 por cirujano — semana actual</div>
+    </div>
+    <div style="overflow-x:auto"><table class="conv-table" id="canal-table"></table></div>
+  </div>
+
+  <div style="margin-bottom:8px">
+    <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px">Quién agenda · primeras consultas CP 2026 · activos desde Ene 2025</div>
+    <div id="canal-agendadores"></div>
+  </div>
+</div>
+
+<!-- 2026 YTD -->
+<div id="view-ytd2026" class="view">
+  <div class="sec-h">
+    <div>
+      <h2>📊 Resumen 2026 YTD — Ene a Jun 2026</h2>
+      <p>Datos reales Medilink · 1 Ene 2026 – 10 Jun 2026 · Solo citas de esta clínica</p>
+    </div>
+  </div>
+  <div id="ytd-insight-cards" class="insights" style="margin-bottom:24px"></div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
+    <div style="overflow-x:auto"><table class="conv-table" id="ytd-table"></table></div>
+  </div>
+</div>
+
+<!-- SUCURSALES -->
+<div id="view-sucursales" class="view">
+  <div class="sec-h">
+    <div>
+      <h2>🏥 Vista por Sucursal</h2>
+      <p>S1 = nuevos pacientes (necesita contenido) · S2 = controles post-op · Semana actual: 8–14 Jun · Próxima: 15–21 Jun</p>
+    </div>
+  </div>
+  <div id="suc-insight-cards" class="insights" style="margin-bottom:24px"></div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
+    <div style="overflow-x:auto"><table class="suc-table" id="suc-table"></table></div>
+  </div>
+</div>
+
+<!-- EMBUDO -->
+<div id="view-embudo" class="view">
+  <div class="sec-h">
+    <div>
+      <h2>🔄 Embudo Paciente — Diagrama Inbox</h2>
+      <p>Flujo completo Medilink → Make → Escala · Estado actual del sistema</p>
+    </div>
+  </div>
+
+  <style>
+    .emb-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+    .emb-leg-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600}
+    .emb-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    .emb-layout{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
+    .emb-flow{display:flex;flex-direction:column;gap:0}
+    .emb-phase{position:relative}
+    .emb-phase-header{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:8px 8px 0 0;cursor:pointer;user-select:none}
+    .emb-phase-header.collapsed{border-radius:8px}
+    .emb-phase-num{font-size:11px;font-weight:800;opacity:.7;min-width:52px}
+    .emb-phase-title{font-size:13px;font-weight:700;flex:1}
+    .emb-phase-badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;background:rgba(255,255,255,.12)}
+    .emb-phase-body{background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+    .emb-connector{width:2px;height:16px;background:var(--border);margin:0 auto}
+    .emb-blocks{display:flex;flex-wrap:wrap;gap:8px}
+    .emb-block{padding:6px 12px;border-radius:6px;font-size:11px;font-weight:600;line-height:1.4}
+    .emb-block small{display:block;font-weight:400;opacity:.8;font-size:10px;margin-top:2px}
+    .emb-row{display:flex;align-items:flex-start;gap:10px;font-size:12px}
+    .emb-row-icon{font-size:14px;margin-top:1px;flex-shrink:0}
+    /* colors */
+    .c-ok{background:#1a3a2a;color:#4ade80;border:1px solid #22543d}
+    .c-gap{background:#2a2a1a;color:#facc15;border:1px solid #713f12}
+    .c-cero{background:#3a1a1a;color:#f87171;border:1px solid #7f1d1d}
+    .c-make{background:#2a1a3a;color:#c084fc;border:1px solid #6b21a8}
+    .c-escala{background:#0d2a3a;color:#38bdf8;border:1px solid #0c4a6e}
+    .c-ph-ok{background:#1a3a2a;border:1px solid #22543d}
+    .c-ph-gap{background:#2d2d1a;border:1px solid #713f12}
+    .c-ph-cero{background:#3a1a1a;border:1px solid #7f1d1d}
+    .c-ph-escala{background:#0d2a3a;border:1px solid #0c4a6e}
+    /* pending panel */
+    .pend-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:sticky;top:20px}
+    .pend-step{display:flex;gap:10px;margin-bottom:14px;align-items:flex-start}
+    .pend-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+    .pend-body{flex:1}
+    .pend-title{font-size:12px;font-weight:700;margin-bottom:2px}
+    .pend-sub{font-size:11px;color:var(--text2);line-height:1.5}
+    .num-map{margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+    .num-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+    .num-pill{font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap;flex-shrink:0}
+    .num-desc{font-size:11px;color:var(--text2);line-height:1.4}
+    @media(max-width:800px){.emb-layout{grid-template-columns:1fr}.pend-panel{position:static}}
+  </style>
+
+  <div class="emb-legend">
+    <div class="emb-leg-item"><div class="emb-dot" style="background:#4ade80"></div>Funciona</div>
+    <div class="emb-leg-item"><div class="emb-dot" style="background:#facc15"></div>Brecha / falta</div>
+    <div class="emb-leg-item"><div class="emb-dot" style="background:#f87171"></div>CERO (reemplazar)</div>
+    <div class="emb-leg-item"><div class="emb-dot" style="background:#c084fc"></div>Make (puente)</div>
+    <div class="emb-leg-item"><div class="emb-dot" style="background:#38bdf8"></div>Escala (automatización)</div>
+  </div>
+
+  <div class="emb-layout">
+    <!-- LEFT: flow -->
+    <div class="emb-flow" id="embudo-flow"></div>
+
+    <!-- RIGHT: pending panel -->
+    <div class="pend-panel">
+      <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--text2);margin-bottom:14px">Pendientes — Eliminar CERO</div>
+
+      <div class="pend-step">
+        <div class="pend-num" style="background:#0d2a3a;color:#38bdf8">①</div>
+        <div class="pend-body">
+          <div class="pend-title">Escala — Crear campos CP</div>
+          <div class="pend-sub">CP:Fecha Cita · CP:Hora Cita<br>CP:Tipo Cita · CP:Sucursal</div>
+        </div>
+      </div>
+      <div class="pend-step">
+        <div class="pend-num" style="background:#2a1a3a;color:#c084fc">②</div>
+        <div class="pend-body">
+          <div class="pend-title">Make — Sync fecha/hora</div>
+          <div class="pend-sub">Webhook Medilink → actualiza CP en Escala con fecha, hora, sucursal y profesional</div>
+        </div>
+      </div>
+      <div class="pend-step">
+        <div class="pend-num" style="background:#2a2a1a;color:#facc15">③</div>
+        <div class="pend-body">
+          <div class="pend-title">Plantillas Meta Business</div>
+          <div class="pend-sub">Confirmación + botones respuesta (Confirma / Cancela / Reagendar) — crear ya</div>
+        </div>
+      </div>
+      <div class="pend-step">
+        <div class="pend-num" style="background:#1a3a2a;color:#4ade80">④</div>
+        <div class="pend-body">
+          <div class="pend-title">Flujos Escala</div>
+          <div class="pend-sub">Recordatorio día anterior · Confirmación · Reintento 24h · Post plantillas</div>
+        </div>
+      </div>
+      <div class="pend-step" style="margin-bottom:0">
+        <div class="pend-num" style="background:#3a1a1a;color:#f87171">⑤</div>
+        <div class="pend-body">
+          <div class="pend-title">Apagar CERO (+56 9 3140 2250)</div>
+          <div class="pend-sub">Marcha blanca 1 semana · cerrar contrato · avisar pacientes activas · redirigir secretaría</div>
+        </div>
+      </div>
+
+      <div class="num-map">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:10px">Mapa de números WA</div>
+        <div class="num-row">
+          <span class="num-pill" style="background:#3a1a1a;color:#f87171">ELIMINAR</span>
+          <span class="num-desc"><strong>+56 9 3140 2250</strong><br>CERO — bot confirmaciones</span>
+        </div>
+        <div class="num-row">
+          <span class="num-pill" style="background:#2a2a1a;color:#facc15">REDIRIGIR</span>
+          <span class="num-desc"><strong>+56 9 6615 5686</strong><br>Secretaría — CERO enviaba aquí</span>
+        </div>
+        <div class="num-row" style="margin-bottom:0">
+          <span class="num-pill" style="background:#1a3a2a;color:#4ade80">ÚNICO OFICIAL</span>
+          <span class="num-desc"><strong>+56 9 3266 2672</strong><br>Escala — todo el viaje del paciente</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<script>
+// ════════════════════════════════════════════════════════
+//  DATOS REALES — Exportado de Medilink 09/06/2026
+//  semana_s1 = Sillón 1 (nuevos pacientes) → métrica marketing
+//  semana_s2 = Sillón 2 (controles post-op) → no necesita contenido
+// ════════════════════════════════════════════════════════
+const WEEK_LABELS = [
+  "08/06 – 14/06","15/06 – 21/06","22/06 – 28/06",
+  "29/06 – 05/07","06/07 – 12/07","13/07 – 19/07",
+  "20/07 – 26/07","27/07 – 02/08","03/08 – 09/08"
+];
+const TODAY_MES = 5; // Jun = índice 5 (0-based)
+
+
+// S1 = Sillón 1 = Cirugía Plástica / nuevos pacientes (NECESITA CONTENIDO)
+// S2 = Sillón 2 = Controles post-op (sólo Vitacura, no requiere marketing)
+const CIRUJANOS = [
+  // ── Fuente: Medilink export 10-Jun-2026 19:44 (31.241 registros) ──────────
+  // evaluacion = S1 no-cancelados (all-time); eval_atendida = S1 Atendido (all-time)
+  // semana_s1/s2 = semana actual 8–14 Jun (S1/S2 no-cancelados)
+  {
+    id:'PC', nombre:'Patricio Covarrubias', apellido:'Covarrubias Cárceles',
+    fullname:'Patricio Andrés Covarrubias Cárceles',
+    color:'#7c6af5',
+    sucursales:['Vitacura','La Serena','Providencia','Antofagasta'],
+    total:905, atendido:404, no_asiste:44, anulado:1069,
+    sillon1:905, sillon2:62,
+    evaluacion:938, eval_atendida:403, conv_eval:43,
+    ops_2025:150, ops_2026:39, conv_real:13,
+    semana_s1:6, semana_s2:0,
+    semanas:[7,14,4,0,0,2,2,1,0],
+    canal_sem:{marketing:13,ventas:5,recepcion:5,online:2},
+    ytd:{total:379, s1:292, s2:62, atend:87, s1_ate:87, conv:13, anul:353},
+    meses_eval:[32, 0, 95, 54, 67, 40, 4, 0, 0, 0, 0, 0],
+    meses_ate:[17, 0, 27, 12, 25, 6, 0, 0, 0, 0, 0, 0],
+    manana:[{hora:'12:30',paciente:'Daniela Rocamora Garcia',motivo:'Evaluación'},
+      {hora:'15:30',paciente:'Sawani Georges Hernandez',motivo:'Evaluación'}]
+  },
+  {
+    id:'CA', nombre:'Cristian Arriagada', apellido:'Arriagada Irarrazaval',
+    fullname:'Cristian Andres Arriagada Irarrazaval',
+    color:'#38bdf8',
+    sucursales:['Vitacura','Concepción','Videoconsulta'],
+    total:826, atendido:338, no_asiste:69, anulado:831,
+    sillon1:826, sillon2:126,
+    evaluacion:858, eval_atendida:341, conv_eval:40,
+    ops_2025:177, ops_2026:68, conv_real:23,
+    semana_s1:10, semana_s2:1,
+    semanas:[10,17,6,2,3,2,1,0,0],
+    canal_sem:{ventas:2,online:6,marketing:5,recepcion:6},
+    ytd:{total:448, s1:299, s2:126, atend:88, s1_ate:88, conv:23, anul:242},
+    meses_eval:[55, 0, 54, 73, 66, 42, 8, 1, 0, 0, 0, 0],
+    meses_ate:[15, 0, 20, 20, 26, 7, 0, 0, 0, 0, 0, 0],
+    manana:[]
+  },
+  {
+    id:'JC', nombre:'Jorge Conejero', apellido:'Conejero Roos',
+    fullname:'Jorge Alejandro Conejero Roos',
+    color:'#f472b6',
+    sucursales:['Vitacura','Calama','La Serena','Pto. Montt'],
+    nota:'🔒 Mié 10 Jun: bloqueado · ✅ Vie 12 Jun: activos',
+    total:811, atendido:330, no_asiste:37, anulado:773,
+    sillon1:811, sillon2:80,
+    evaluacion:844, eval_atendida:330, conv_eval:39,
+    ops_2025:188, ops_2026:53, conv_real:20,
+    semana_s1:7, semana_s2:0,
+    semanas:[7,9,2,0,1,1,0,0,0],
+    canal_sem:{recepcion:4,online:4,marketing:2},
+    ytd:{total:352, s1:262, s2:80, atend:93, s1_ate:93, conv:20, anul:197},
+    meses_eval:[50, 23, 73, 45, 41, 27, 2, 0, 0, 0, 1, 0],
+    meses_ate:[22, 11, 24, 20, 11, 5, 0, 0, 0, 0, 0, 0],
+    manana:[]
+  },
+  {
+    id:'RB', nombre:'Rodolfo Behm', apellido:'Behm Olivares',
+    fullname:'Rodolfo Maximiliano Behm Olivares',
+    color:'#34d399',
+    sucursales:['Vitacura','Concepción','Providencia'],
+    total:627, atendido:447, no_asiste:41, anulado:599,
+    sillon1:627, sillon2:50,
+    evaluacion:635, eval_atendida:447, conv_eval:70,
+    ops_2025:61, ops_2026:41, conv_real:19,
+    semana_s1:5, semana_s2:3,
+    semanas:[4,2,3,0,0,0,0,1,0],
+    canal_sem:{recepcion:5},
+    ytd:{total:294, s1:221, s2:50, atend:153, s1_ate:153, conv:19, anul:218},
+    meses_eval:[50, 56, 37, 36, 26, 14, 1, 0, 1, 0, 0, 0],
+    meses_ate:[32, 43, 32, 24, 17, 5, 0, 0, 0, 0, 0, 0],
+    manana:[]
+  },
+  {
+    id:'FO', nombre:'Francisco Oyarce', apellido:'Oyarce Torres',
+    fullname:'Francisco Nicolas Oyarce Torres',
+    color:'#fb923c',
+    sucursales:['Vitacura','Concepción','La Serena','Videoconsulta'],
+    total:305, atendido:169, no_asiste:14, anulado:273,
+    sillon1:305, sillon2:13,
+    evaluacion:314, eval_atendida:169, conv_eval:54,
+    ops_2025:57, ops_2026:10, conv_real:22,
+    semana_s1:0, semana_s2:0,
+    semanas:[0,0,1,1,0,0,1,0,0],
+    canal_sem:{},
+    ytd:{total:59, s1:46, s2:13, atend:18, s1_ate:18, conv:22, anul:42},
+    meses_eval:[15, 2, 13, 5, 7, 3, 1, 0, 0, 0, 0, 0],
+    meses_ate:[9, 2, 3, 1, 2, 1, 0, 0, 0, 0, 0, 0],
+    manana:[]
+  },
+  {
+    id:'LL', nombre:'Loreto Lennon', apellido:'Lennon Zaninovic',
+    fullname:'María Loreto Lennon Zaninovic',
+    color:'#a78bfa',
+    sucursales:['Vitacura','Viña del Mar','Inyectables'],
+    total:354, atendido:257, no_asiste:18, anulado:225,
+    sillon1:354, sillon2:15,
+    evaluacion:358, eval_atendida:258, conv_eval:72,
+    ops_2025:28, ops_2026:9, conv_real:7,
+    semana_s1:5, semana_s2:0,
+    semanas:[4,1,2,0,3,0,0,0,0],
+    canal_sem:{recepcion:4,online:1,marketing:1},
+    ytd:{total:143, s1:127, s2:15, atend:88, s1_ate:88, conv:7, anul:58},
+    meses_eval:[30, 23, 23, 20, 18, 9, 3, 1, 0, 0, 0, 0],
+    meses_ate:[22, 21, 15, 14, 14, 2, 0, 0, 0, 0, 0, 0],
+    manana:[{hora:'15:00',paciente:'Erika Figueroa Gonzalez',motivo:'Evaluación'},
+      {hora:'16:00',paciente:'Nicole Juul',motivo:'Evaluación'},
+      {hora:'16:00',paciente:'Fanny Dueñas Castro',motivo:'Evaluación'},
+      {hora:'16:30',paciente:'Fanny Dueñas Castro',motivo:'Evaluación'}]
+  },
+  {
+    id:'JL', nombre:'Juan Lombardi', apellido:'Lombardi Azócar',
+    fullname:'Juan José Lombardi Azócar',
+    color:'#06b6d4',
+    sucursales:['Vitacura','Pto. Montt','Viña del Mar'],
+    total:176, atendido:117, no_asiste:12, anulado:205,
+    sillon1:176, sillon2:11,
+    evaluacion:178, eval_atendida:117, conv_eval:66,
+    ops_2025:25, ops_2026:5, conv_real:9,
+    semana_s1:1, semana_s2:2,
+    semanas:[1,1,0,0,0,0,0,0,0],
+    canal_sem:{marketing:1},
+    ytd:{total:65, s1:53, s2:11, atend:33, s1_ate:33, conv:9, anul:60},
+    meses_eval:[21, 0, 12, 7, 9, 4, 0, 0, 0, 0, 0, 0],
+    meses_ate:[16, 0, 8, 3, 5, 1, 0, 0, 0, 0, 0, 0],
+    manana:[]
+  },
+  {
+    id:'FB', nombre:'Francisco Bencina', apellido:'Bencina Matus',
+    fullname:'Francisco Tomás Bencina Matus',
+    color:'#22c55e',
+    sucursales:['Vitacura','Antofagasta','Videoconsulta'],
+    total:130, atendido:81, no_asiste:6, anulado:204,
+    sillon1:130, sillon2:6,
+    evaluacion:131, eval_atendida:81, conv_eval:62,
+    ops_2025:25, ops_2026:2, conv_real:9,
+    semana_s1:1, semana_s2:0,
+    semanas:[1,0,0,1,0,0,0,0,0],
+    canal_sem:{recepcion:2,online:1},
+    ytd:{total:30, s1:22, s2:6, atend:13, s1_ate:13, conv:9, anul:49},
+    meses_eval:[6, 7, 6, 1, 0, 2, 0, 0, 0, 0, 0, 0],
+    meses_ate:[4, 3, 4, 1, 0, 1, 0, 0, 0, 0, 0, 0],
+    manana:[]
+  },
+  {
+    id:'JPC', nombre:'Juan Pablo Cárdenas', apellido:'Cárdenas Larenas',
+    fullname:'Juan Pablo Cárdenas Larenas',
+    color:'#ec4899',
+    sucursales:['Copiapó','Vitacura'],
+    total:165, atendido:97, no_asiste:4, anulado:137,
+    sillon1:165, sillon2:0,
+    evaluacion:165, eval_atendida:97, conv_eval:59,
+    ops_2025:5, ops_2026:0, conv_real:0,
+    semana_s1:8, semana_s2:0,
+    semanas:[8, 2, 0, 0, 6, 0, 0, 0, 0],
+    canal_sem:{recepcion:18,online:10,marketing:3},
+    ytd:{total:130, s1:112, s2:0, atend:63, s1_ate:63, conv:0, anul:102},
+    meses_eval:[19, 19, 23, 19, 15, 11, 6, 0, 0, 0, 0, 0],
+    meses_ate:[14, 11, 14, 11, 12, 1, 0, 0, 0, 0, 0, 0],
+    manana:[{hora:'17:00',paciente:'Myriam Contreras',motivo:'Evaluación'},
+      {hora:'18:00',paciente:'Nicole Fernanda Rivera Araya',motivo:'Evaluación'},
+      {hora:'18:30',paciente:'Karina González Garay',motivo:'Evaluación'}]
+  },
+  {
+    id:'RM', nombre:'Roberto Macchiavello', apellido:'Macchiavello Macho',
+    fullname:'Roberto Ariel Macchiavello Macho',
+    color:'#f97316',
+    sucursales:['Calama','Providencia','Vitacura'],
+    total:107, atendido:45, no_asiste:0, anulado:59,
+    sillon1:107, sillon2:0,
+    evaluacion:108, eval_atendida:45, conv_eval:42,
+    ops_2025:1, ops_2026:0, conv_real:0,
+    semana_s1:8, semana_s2:0,
+    semanas:[8,0,5,0,0,0,0,1,1],
+    canal_sem:{recepcion:11},
+    ytd:{total:83, s1:82, s2:0, atend:33, s1_ate:33, conv:0, anul:38},
+    meses_eval:[9, 13, 6, 22, 15, 15, 1, 1, 0, 0, 0, 0],
+    meses_ate:[4, 8, 4, 10, 5, 2, 0, 0, 0, 0, 0, 0],
+    manana:[{hora:'10:30',paciente:'teresa Hidalgo',motivo:'Evaluación'}]
+  },
+  {
+    id:'MJH', nombre:'María José Hurtado', apellido:'Hurtado Díaz',
+    fullname:'María José Hurtado Díaz',
+    color:'#fbbf24',
+    sucursales:['Vitacura','Copiapó','Providencia'],
+    total:39, atendido:17, no_asiste:1, anulado:32,
+    sillon1:39, sillon2:0,
+    evaluacion:39, eval_atendida:17, conv_eval:44,
+    ops_2025:0, ops_2026:0, conv_real:0,
+    semana_s1:0, semana_s2:0,
+    semanas:[0,2,0,0,7,1,0,1,0],
+    canal_sem:{ventas:1},
+    ytd:{total:35, s1:34, s2:0, atend:14, s1_ate:14, conv:0, anul:32},
+    meses_eval:[0, 2, 2, 6, 12, 3, 9, 0, 0, 0, 0, 0],
+    meses_ate:[0, 0, 1, 3, 9, 1, 0, 0, 0, 0, 0, 0],
+    manana:[]
+  },
+  {
+    id:'DM', nombre:'Daniela Maldonado', apellido:'Maldonado',
+    fullname:'Daniela Maldonado',
+    color:'#c084fc',
+    sucursales:['Vitacura'],
+    total:12, atendido:7, no_asiste:0, anulado:9,
+    sillon1:12, sillon2:0,
+    evaluacion:12, eval_atendida:8, conv_eval:67,
+    ops_2025:0, ops_2026:0, conv_real:0,
+    semana_s1:3, semana_s2:0,
+    semanas:[3,0,0,0,0,0,0,0,0],
+    canal_sem:{recepcion:6},
+    ytd:{total:12, s1:12, s2:0, atend:7, s1_ate:7, conv:0, anul:9},
+    meses_eval:[0, 0, 1, 4, 3, 4, 0, 0, 0, 0, 0, 0],
+    meses_ate:[0, 0, 1, 3, 1, 2, 0, 0, 0, 0, 0, 0],
+    manana:[]
+  },
+];
+
+// ════════════════════════════════════════════════════════
+//  SUCURSALES — 11 branches activas
+//  s1_act/s2_act = esta semana (8–14 Jun) · s1_prox/s2_prox = próxima (15–21 Jun)
+// ════════════════════════════════════════════════════════
+const SUCURSALES = [
+  {id:'VIT', nombre:'Vitacura',      total:24866, activos:15355, jun:514, s1_act:121, s2_act:6,  s1_prox:103, s2_prox:11},
+  {id:'VID', nombre:'Videoconsulta', total:1865,  activos:1164,  jun:58,  s1_act:13,  s2_act:0,  s1_prox:16,  s2_prox:0},
+  {id:'CON', nombre:'Concepción',    total:1148,  activos:668,   jun:24,  s1_act:0,   s2_act:0,  s1_prox:11,  s2_prox:0},
+  {id:'CAL', nombre:'Calama',        total:721,   activos:454,   jun:25,  s1_act:16,  s2_act:0,  s1_prox:0,   s2_prox:0},
+  {id:'ANT', nombre:'Antofagasta',   total:792,   activos:467,   jun:18,  s1_act:2,   s2_act:0,  s1_prox:0,   s2_prox:0},
+  {id:'SER', nombre:'La Serena',     total:742,   activos:501,   jun:16,  s1_act:0,   s2_act:0,  s1_prox:15,  s2_prox:0},
+  {id:'COP', nombre:'Copiapó',       total:284,   activos:186,   jun:13,  s1_act:11,  s2_act:0,  s1_prox:0,   s2_prox:0},
+  {id:'PRO', nombre:'Providencia',   total:319,   activos:140,   jun:10,  s1_act:4,   s2_act:0,  s1_prox:0,   s2_prox:0},
+  {id:'INY', nombre:'Inyectables',   total:99,    activos:69,    jun:1,   s1_act:1,   s2_act:0,  s1_prox:0,   s2_prox:0},
+  {id:'PMT', nombre:'Pto. Montt',    total:244,   activos:121,   jun:0,   s1_act:0,   s2_act:0,  s1_prox:0,   s2_prox:0},
+  {id:'VIN', nombre:'Viña del Mar',  total:135,   activos:85,    jun:0,   s1_act:0,   s2_act:0,  s1_prox:0,   s2_prox:0},
+];
+
+// Per-cirujano × per-sucursal × 9 semanas de S1 activos
+// Índice 0 = semana 8-14 Jun 2026, índice 1 = 15-21 Jun, etc.
+// Fuente: Medilink export 10/06/2026 — excluye estados CANCELADOS
+const CIR_SUC = {
+  'PC': {'Vitacura':{s1:1,s2:1,s1p:1,s2p:2}, 'Providencia':{s1:4,s2:0,s1p:0,s2p:0}, 'La Serena':{s1:0,s2:0,s1p:14,s2p:0}},
+  'CA': {'Vitacura':{s1:9,s2:0,s1p:8,s2p:3}, 'Concepción':{s1:0,s2:0,s1p:7,s2p:0}},
+  'JC': {'Vitacura':{s1:6,s2:0,s1p:8,s2p:2}},
+  'RB': {'Vitacura':{s1:5,s2:3,s1p:2,s2p:2}, 'Concepción':{s1:0,s2:0,s1p:0,s2p:0}},
+  'LL': {'Vitacura':{s1:3,s2:0,s1p:1,s2p:0}, 'Inyectables':{s1:1,s2:0,s1p:0,s2p:0}},
+  'JL': {'Vitacura':{s1:0,s2:2,s1p:1,s2p:2}},
+  'FB': {'Vitacura':{s1:1,s2:0,s1p:0,s2p:0}},
+  'JPC':{'Copiapó':{s1:8,s2:0,s1p:0,s2p:0}, 'Vitacura':{s1:0,s2:0,s1p:2,s2p:0}},
+  'RM': {'Calama':{s1:7,s2:0,s1p:0,s2p:0}, 'Providencia':{s1:0,s2:0,s1p:0,s2p:0}},
+  'MJH':{'Vitacura':{s1:0,s2:0,s1p:2,s2p:0}},
+  'DM': {'Vitacura':{s1:3,s2:0,s1p:0,s2p:0}},
+};
+const CIR_SUC_SEM = {
+  'PC': {
+    'Antofagasta': [0, 0, 0, 0, 0, 0, 1, 0, 0],
+    'La Serena':   [0,14, 0, 0, 0, 2, 0, 0, 0],
+    'Providencia': [4, 0, 3, 0, 0, 0, 0, 0, 0],
+    'Vitacura':    [2, 1, 1, 0, 0, 0, 0, 1, 0],
+  },
+  'CA': {
+    'Concepción':  [0, 7, 0, 0, 0, 0, 1, 0, 0],
+    'Vitacura':    [9, 8, 6, 2, 3, 2, 0, 0, 0],
+  },
+  'JC': {
+    'Vitacura':    [6, 8, 2, 0, 1, 1, 0, 0, 0],
+  },
+  'RB': {
+    'Concepción':  [0, 0, 1, 0, 0, 0, 0, 1, 0],
+    'Vitacura':    [5, 2, 1, 0, 0, 0, 0, 0, 0],
+  },
+  'FO': {
+    'Vitacura':    [0, 0, 1, 1, 0, 0, 1, 0, 0],
+  },
+  'LL': {
+    'Inyectables': [1, 0, 0, 0, 0, 0, 0, 0, 0],
+    'Vitacura':    [3, 1, 2, 0, 3, 0, 0, 0, 0],
+  },
+  'JL': {
+    'Vitacura':    [0, 1, 0, 0, 0, 0, 0, 0, 0],
+  },
+  'FB': {
+    'Vitacura':    [1, 0, 0, 1, 0, 0, 0, 0, 0],
+  },
+  'JPC': {
+    'Copiapó':     [8, 0, 0, 0, 6, 0, 0, 0, 0],
+    'Vitacura':    [0, 2, 0, 0, 0, 0, 0, 0, 0],
+  },
+  'RM': {
+    'Calama':      [7, 0, 4, 0, 0, 0, 0, 1, 0],
+    'Providencia': [0, 0, 1, 0, 0, 0, 0, 0, 1],
+  },
+  'MJH': {
+    'Copiapó':     [0, 0, 0, 0, 6, 0, 0, 0, 0],
+    'Vitacura':    [0, 2, 0, 0, 1, 1, 0, 1, 0],
+  },
+  'DM': {
+    'Vitacura':    [3, 0, 0, 0, 0, 0, 0, 0, 0],
+  },
+};
+
+// Sucursales con al menos un cirujano mapeado en los datos semanales
+const SUC_CON_CIRUJANO = [...new Set(
+  Object.values(CIR_SUC_SEM).flatMap(d=>Object.keys(d))
+)].sort((a,b)=>a.localeCompare(b,'es'));
+
+// ════════════════════════════════════════════════════════
+//  DATOS MENSUALES POR CANAL (PRIMERAS CONSULTAS — Cirugía Plástica)
+//  Fuente: exportación Medilink · Filtro: CP S1, PRIMERA CONSULTA POR PACIENTE
+//  Solo pacientes nuevos (primer contacto histórico con la clínica)
+//  Online    = Medilink portal + bots (Vita_bot, Cero_bot, Soporte Engenis)
+//  Marketing = Tamara González, Carlos Arias, Cristobal Falcon, Administrador
+//  Ventas    = Amelia Donoso, Pilar Mandiola, Daniela Hernandez, Ignacia Krauss, Rodrigo Ayala
+//  Recepción = Mariel Aereboe, Susana Moreno, Pamela Slight, Heidy Colvin, etc.
+//  Clínico   = Coordinadores, enfermeras, doctores que agendan directamente
+// ════════════════════════════════════════════════════════
+const CANAL_MENSUAL = [
+  {mes:'Ene', online:59, marketing:44, ventas:35, recepcion:75, clinico:1},
+  {mes:'Feb', online:21, marketing:26, ventas:15, recepcion:31, clinico:0},
+  {mes:'Mar', online:81, marketing:61, ventas:27, recepcion:59, clinico:1},
+  {mes:'Abr', online:59, marketing:75, ventas:20, recepcion:40, clinico:1},
+  {mes:'May', online:58, marketing:53, ventas:13, recepcion:62, clinico:0},
+  {mes:'Jun', online:24, marketing:30, ventas:17, recepcion:24, clinico:0},
+  {mes:'Jul', online:1,  marketing:9,  ventas:2,  recepcion:11, clinico:0},
+  {mes:'Ago', online:1,  marketing:0,  ventas:0,  recepcion:0,  clinico:0},
+  {mes:'Sep', online:0,  marketing:0,  ventas:0,  recepcion:0,  clinico:0},
+  {mes:'Oct', online:0,  marketing:0,  ventas:0,  recepcion:0,  clinico:0},
+  {mes:'Nov', online:0,  marketing:0,  ventas:0,  recepcion:0,  clinico:0},
+  {mes:'Dic', online:0,  marketing:0,  ventas:0,  recepcion:0,  clinico:0},
+];
+
+// ════════════════════════════════════════════════════════
+//  AGENDADORES POR CANAL (primeras consultas CP 2026)
+//  Solo personas activas desde Ene 2025
+// ════════════════════════════════════════════════════════
+const AGENDADORES = {
+  'Online': [
+    {nombre:'Medilink',  total:301, total_ate:91, meses:[59,21,79,59,58,22,2,1,0,0,0,0], ate:[20,17,21,12,21,0,0,0,0,0,0,0]},
+    {nombre:'Vita_bot',  total:2,   total_ate:0,  meses:[0,0,2,0,0,0,0,0,0,0,0,0],       ate:[0,0,0,0,0,0,0,0,0,0,0,0]},
+    {nombre:'Cero_bot',  total:1,   total_ate:0,  meses:[0,0,0,0,0,1,0,0,0,0,0,0],       ate:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  ],
+  'Marketing': [
+    {nombre:'Tamara González',  total:246, total_ate:66, meses:[44,26,41,62,40,25,8,0,0,0,0,0], ate:[18,9,12,12,12,3,0,0,0,0,0,0]},
+    {nombre:'Carlos Arias',     total:51,  total_ate:13, meses:[0,0,20,13,12,6,0,0,0,0,0,0],    ate:[0,0,4,1,4,4,0,0,0,0,0,0]},
+    {nombre:'Administrador',    total:2,   total_ate:0,  meses:[0,0,0,0,1,1,0,0,0,0,0,0],       ate:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  ],
+  'Ventas': [
+    {nombre:'Amelia Donoso',         total:98,  total_ate:71, meses:[20,7,22,19,13,15,2,0,0,0,0,0],  ate:[17,7,20,16,11,0,0,0,0,0,0,0]},
+    {nombre:'Pilar Mandiola',        total:20,  total_ate:12, meses:[10,6,4,0,0,0,0,0,0,0,0,0],      ate:[5,4,2,0,1,0,0,0,0,0,0,0]},
+    {nombre:'Daniela Hernandez',     total:7,   total_ate:4,  meses:[2,2,1,0,0,2,0,0,0,0,0,0],       ate:[1,2,1,0,0,0,0,0,0,0,0,0]},
+    {nombre:'Ignacia Krauss Souper', total:4,   total_ate:4,  meses:[3,0,0,1,0,0,0,0,0,0,0,0],       ate:[3,0,0,1,0,0,0,0,0,0,0,0]},
+  ],
+  'Recepción': [
+    {nombre:'Mariel Aereboe',  total:166, total_ate:76, meses:[45,15,36,31,25,14,0,0,0,0,0,0], ate:[20,10,11,16,11,8,0,0,0,0,0,0]},
+    {nombre:'Susana Moreno',   total:131, total_ate:66, meses:[30,15,23,8,34,10,11,0,0,0,0,0],  ate:[18,12,14,3,16,3,0,0,0,0,0,0]},
+    {nombre:'Pamela Slight',   total:6,   total_ate:2,  meses:[0,1,0,0,2,3,0,0,0,0,0,0],       ate:[0,1,0,0,0,1,0,0,0,0,0,0]},
+    {nombre:'Heidy Colvin',    total:2,   total_ate:0,  meses:[0,0,0,1,1,0,0,0,0,0,0,0],       ate:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  ],
+  'Clínico': [
+    {nombre:'Carolina Music W.',    total:2, total_ate:2, meses:[1,0,0,1,0,0,0,0,0,0,0,0], ate:[1,0,0,1,0,0,0,0,0,0,0,0]},
+    {nombre:'EU Administrativa',    total:1, total_ate:1, meses:[0,0,1,0,0,0,0,0,0,0,0,0], ate:[0,0,1,0,0,0,0,0,0,0,0,0]},
+    {nombre:'Roberto Macchiavello', total:1, total_ate:0, meses:[0,0,0,0,1,0,0,0,0,0,0,0], ate:[0,0,0,0,0,0,0,0,0,0,0,0]},
+  ],
+};
+
+// ════════════════════════════════════════════════════════
+//  HELPERS
+// ════════════════════════════════════════════════════════
+function initials(s){ return s.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function heatClass(n,max){
+  if(n===0) return 'heat-0';
+  const pct = n/max;
+  if(pct<.15) return 'heat-low';
+  if(pct<.40) return 'heat-mid';
+  if(pct<.70) return 'heat-hi';
+  return 'heat-full';
+}
+function convColor(c){ return c>=35?'var(--green)':c>=20?'var(--gold)':'var(--red)'; }
+function weekStatus(n){
+  // n = semana_s1 (nuevos pacientes cirugía plástica)
+  if(n===0) return {cls:'badge-alert',txt:'⚠ Sin S1'};
+  if(n<=2)  return {cls:'badge-warn', txt:'📉 S1 bajo'};
+  if(n<=8)  return {cls:'badge-warn', txt:'📊 S1 medio'};
+  return {cls:'badge-ok',txt:'✅ S1 activo'};
+}
+function noShowRate(s){ return s.atendido+s.no_asiste>0?Math.round(s.no_asiste/(s.atendido+s.no_asiste)*100):0; }
+function sillonTag(s){ return s==='S1'?'<span style="font-size:9px;font-weight:800;background:rgba(124,106,245,.2);color:#a78bfa;border-radius:3px;padding:1px 5px;margin-right:4px">S1</span>':s==='S2'?'<span style="font-size:9px;font-weight:800;background:rgba(34,197,94,.15);color:var(--green);border-radius:3px;padding:1px 5px;margin-right:4px">S2</span>':''; }
+function sucLabel(arr){ return arr.join(' · '); }
+function canalMini(cs){
+  const tot = (cs.online||0)+(cs.marketing||0)+(cs.recepcion||0);
+  if(tot===0) return '';
+  const cfg=[{k:'online',c:'#38bdf8',l:'Web'},{k:'marketing',c:'#a78bfa',l:'Mkt'},{k:'recepcion',c:'#34d399',l:'Rec'}];
+  const segs = cfg.map(x=>cs[x.k]>0?`<div title="${x.l}: ${cs[x.k]}" style="flex:${cs[x.k]};background:${x.c};height:100%"></div>`:'').join('');
+  const pills = cfg.filter(x=>cs[x.k]>0).map(x=>`<span style="font-size:10px;color:${x.c}">${x.l} ${cs[x.k]}</span>`).join(' · ');
+  return `<div style="margin:8px 0 10px">
+    <div style="display:flex;height:5px;border-radius:3px;overflow:hidden;background:var(--bg3)">${segs}</div>
+    <div style="margin-top:4px;color:var(--text3)">${pills}</div>
+  </div>`;
+}
+
+// max S1 esta semana (excluye controles S2)
+const maxCitas = Math.max(...CIRUJANOS.map(c=>c.semana_s1));
+
+// ════════════════════════════════════════════════════════
+//  CLOCK
+// ════════════════════════════════════════════════════════
+function tick(){
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('es-CL',{hour12:false});
+}
+setInterval(tick,1000); tick();
+
+// ════════════════════════════════════════════════════════
+//  ALERT BANNER
+// ════════════════════════════════════════════════════════
+function buildBanner(){
+  const sinS1 = CIRUJANOS.filter(c=>c.semana_s1===0);
+  const bajaConv = CIRUJANOS.filter(c=>c.conv_eval<20).length;
+  const bestConv = [...CIRUJANOS].sort((a,b)=>b.conv_eval-a.conv_eval)[0];
+  const topCitas = [...CIRUJANOS].sort((a,b)=>b.semana_s1-a.semana_s1)[0];
+  const totalS1 = CIRUJANOS.reduce((a,c)=>a+c.semana_s1,0);
+  const totalS2 = CIRUJANOS.reduce((a,c)=>a+c.semana_s2,0);
+  document.getElementById('alert-banner').innerHTML=`
+    <span style="font-size:13px;font-weight:700;color:var(--text2)">🗓 Sem 08–14 Jun 2026 · <span style="color:#a78bfa">S1 nuevos: ${totalS1}</span> · <span style="color:var(--green)">S2 controles: ${totalS2}</span></span>
+    <span class="alert-pill" title="Sin pacientes nuevos (S1) esta semana">🚨 ${sinS1.length} sin S1: ${sinS1.map(c=>c.nombre.split(' ')[1]||c.nombre).join(', ')}</span>
+    <span class="alert-pill warn">📉 ${bajaConv} conv &lt;20%</span>
+    <span class="alert-pill good">🏆 ${bestConv.nombre.split(' ')[0]} ${bestConv.conv_eval}% conv</span>
+    <span class="alert-pill good">📅 ${topCitas.nombre.split(' ')[0]}: ${topCitas.semana_s1} S1 esta sem</span>
+  `;
+}
+
+// ════════════════════════════════════════════════════════
+//  RESUMEN VIEW
+// ════════════════════════════════════════════════════════
+function buildResumen(){
+  const totalS1 = CIRUJANOS.reduce((a,c)=>a+c.semana_s1,0);
+  const totalS2 = CIRUJANOS.reduce((a,c)=>a+c.semana_s2,0);
+  const totalEval = CIRUJANOS.reduce((a,c)=>a+c.evaluacion,0);
+  const totalEvalAte = CIRUJANOS.reduce((a,c)=>a+c.eval_atendida,0);
+  const convGlobal = Math.round(totalEvalAte/totalEval*100);
+  const totalHist = CIRUJANOS.reduce((a,c)=>a+c.total,0);
+  const sinS1 = CIRUJANOS.filter(c=>c.semana_s1===0).length;
+
+  document.getElementById('insight-cards').innerHTML=`
+    <div class="ins-card"><div class="num" style="color:#a78bfa">${totalS1}</div><div class="lbl">S1 nuevos (semana)</div><div class="sub">Pacientes cirugía plástica</div></div>
+    <div class="ins-card"><div class="num" style="color:var(--green)">${totalS2}</div><div class="lbl">S2 controles (semana)</div><div class="sub">Post-op Vitacura</div></div>
+    <div class="ins-card"><div class="num" style="color:var(--red)">${sinS1}</div><div class="lbl">Sin S1 esta semana</div><div class="sub">Necesitan contenido urgente</div></div>
+    <div class="ins-card"><div class="num" style="color:var(--gold)">${convGlobal}%</div><div class="lbl">Conversión global</div><div class="sub">${totalEvalAte.toLocaleString()} de ${totalEval.toLocaleString()} evals</div></div>
+  `;
+
+  const sorted = [...CIRUJANOS].sort((a,b)=>b.semana_s1-a.semana_s1);
+  document.getElementById('resumen-grid').innerHTML = sorted.map(c=>{
+    const ws = weekStatus(c.semana_s1);
+    const pct = maxCitas>0?Math.round(c.semana_s1/maxCitas*100):0;
+    const noshow = noShowRate(c);
+    const s1Color = c.semana_s1===0?'var(--red)':c.semana_s1<=2?'var(--gold)':'var(--green)';
+    return `<div class="scard">
+      <div class="scard-head">
+        <div class="av" style="background:${c.color};min-width:36px;height:36px">${initials(c.nombre)}</div>
+        <div class="scard-info">
+          <div class="scard-name">${c.nombre}</div>
+          <div class="scard-spec" style="font-size:10px;color:var(--text3)">${sucLabel(c.sucursales)}</div>
+        </div>
+        <span class="content-badge ${ws.cls}">${ws.txt}</span>
+      </div>
+      ${c.nota?`<div style="font-size:10px;color:var(--gold);background:rgba(251,191,36,.08);border-radius:6px;padding:5px 8px;margin-bottom:10px">${c.nota}</div>`:''}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px">
+        <div style="background:rgba(124,106,245,.1);border-radius:6px;padding:7px 10px;text-align:center">
+          <div style="font-size:20px;font-weight:800;color:${s1Color}">${c.semana_s1}</div>
+          <div style="font-size:9px;color:#a78bfa;font-weight:700;text-transform:uppercase;letter-spacing:.3px">S1 Nuevos</div>
+        </div>
+        <div style="background:rgba(34,197,94,.08);border-radius:6px;padding:7px 10px;text-align:center">
+          <div style="font-size:20px;font-weight:800;color:var(--green)">${c.semana_s2}</div>
+          <div style="font-size:9px;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:.3px">S2 Control</div>
+        </div>
+      </div>
+      <div class="week-bar">
+        <div class="week-bar-label"><span style="font-size:10px">S1 vs. máximo semana</span><span style="font-weight:800;color:${s1Color}">${c.semana_s1} / ${maxCitas}</span></div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${s1Color}"></div></div>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><div class="v">${c.conv_eval}%</div><div class="l">Conv.</div></div>
+        <div class="kpi"><div class="v" style="color:var(--accent)">${c.evaluacion}</div><div class="l">Evals</div></div>
+        <div class="kpi"><div class="v" style="color:${noshow>10?'var(--red)':'var(--text)'}">${noshow}%</div><div class="l">No show</div></div>
+        <div class="kpi"><div class="v" style="color:var(--text2)">${(c.semana_s1+c.semana_s2)}</div><div class="l">Total sem</div></div>
+      </div>
+      ${c.semana_s1>0 ? canalMini(c.canal_sem) : ''}
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════
+//  SEMANAL HEATMAP
+// ════════════════════════════════════════════════════════
+let currentSemanalSuc = null;
+
+function filterSemanalSuc(btn, suc){
+  currentSemanalSuc = (currentSemanalSuc === suc) ? null : suc;
+  document.querySelectorAll('#semanal-suc-filter .suc-chip').forEach(b=>b.classList.remove('active'));
+  if(currentSemanalSuc) btn.classList.add('active');
+  renderSemanalTable();
+}
+
+function buildSemanal(){
+  // Usar solo sucursales que tienen datos reales en CIR_SUC_SEM
+  const allSucs = SUC_CON_CIRUJANO;
+  const chipsHtml = `
+    <button class="suc-chip${!currentSemanalSuc?' active':''}" onclick="currentSemanalSuc=null;document.querySelectorAll('#semanal-suc-filter .suc-chip').forEach(b=>b.classList.remove('active'));this.classList.add('active');renderSemanalTable()">Todas</button>
+    ${allSucs.map(s=>`<button class="suc-chip${currentSemanalSuc===s?' active':''}" onclick="filterSemanalSuc(this,'${s}')">${s}</button>`).join('')}
+  `;
+  document.getElementById('semanal-suc-filter').innerHTML = chipsHtml;
+  renderSemanalTable();
+}
+
+function renderSemanalTable(){
+  // Cuando hay filtro de sucursal: mostrar TODOS los cirujanos pero con
+  // conteos únicamente de esa sucursal (0 si el cirujano no opera ahí)
+  const lista = currentSemanalSuc
+    ? CIRUJANOS  // todos — los zeros indican que no tienen citas en esa suc
+    : CIRUJANOS;
+
+  // Obtener array de 9 semanas para un cirujano según el filtro activo
+  function getWeeks(c){
+    if(!currentSemanalSuc) return c.semanas;
+    const sucData = CIR_SUC_SEM[c.id];
+    if(!sucData || !sucData[currentSemanalSuc]) return Array(9).fill(0);
+    return sucData[currentSemanalSuc];
+  }
+
+  const allWeeks = lista.flatMap(c=>getWeeks(c));
+  const maxW = Math.max(...allWeeks, 1);
+
+  // Ordenar: primero los que tienen citas en la sucursal filtrada, luego por s1 esta semana
+  const sorted = [...lista].sort((a,b)=>{
+    const wa = getWeeks(a), wb = getWeeks(b);
+    const totA = wa.reduce((s,n)=>s+n,0), totB = wb.reduce((s,n)=>s+n,0);
+    if(totA !== totB) return totB - totA;
+    return wb[0] - wa[0];
+  });
+
+  let html = `<thead><tr>
+    <th style="min-width:175px">Cirujano</th>
+    ${WEEK_LABELS.map((l,i)=>`<th style="${i===0?'color:var(--accent)':''}">${l}</th>`).join('')}
+    <th>Conv %</th><th>S1 / S2 sem</th>
+  </tr></thead><tbody>`;
+
+  sorted.forEach(c=>{
+    const weeks = getWeeks(c);
+    const w0 = weeks[0];
+    const hasAnyCitas = weeks.some(n=>n>0);
+    const rowStyle = (!hasAnyCitas && currentSemanalSuc) ? 'opacity:0.35' : '';
+    html+=`<tr style="${rowStyle}">
+      <td>
+        <div class="surgeon-cell">
+          <div class="av" style="background:${c.color}">${initials(c.nombre)}</div>
+          <div>
+            <div class="surgeon-nm">${c.nombre}${w0===0&&!currentSemanalSuc?'<span class="need-content">SIN S1</span>':''}</div>
+            <div class="surgeon-sp" style="font-size:9px">${currentSemanalSuc ? currentSemanalSuc : sucLabel(c.sucursales)}</div>
+          </div>
+        </div>
+      </td>
+      ${weeks.map((n,i)=>{
+        const cls = heatClass(n, maxW||20);
+        return `<td><div class="heat-cell ${cls}" title="${n} citas S1${currentSemanalSuc?' en '+currentSemanalSuc:''}">${n>0?n:'–'}</div></td>`;
+      }).join('')}
+      <td><span style="font-weight:800;color:${convColor(c.conv_eval)}">${c.conv_eval}%</span></td>
+      <td style="white-space:nowrap"><span style="color:#a78bfa;font-weight:800">${currentSemanalSuc?(CIR_SUC_SEM[c.id]&&CIR_SUC_SEM[c.id][currentSemanalSuc]?CIR_SUC_SEM[c.id][currentSemanalSuc][0]:0):c.semana_s1}</span><span style="color:var(--text3);font-size:10px"> S1</span> <span style="color:var(--green);font-weight:700">${c.semana_s2}</span><span style="color:var(--text3);font-size:10px"> S2</span></td>
+    </tr>`;
+  });
+  html+='</tbody>';
+  document.getElementById('hm-table').innerHTML=html;
+}
+
+// ════════════════════════════════════════════════════════
+//  DETALLE CIRUJANOS
+// ════════════════════════════════════════════════════════
+function buildCircujanos(){
+  renderCirujanoCards(CIRUJANOS);
+}
+
+function renderCirujanoCards(lista){
+  const sorted = [...lista].sort((a,b)=>b.total-a.total);
+  document.getElementById('detail-grid').innerHTML = sorted.map(c=>{
+    const ws = weekStatus(c.semana_s1);
+    const noshow = noShowRate(c);
+    const atenPct = c.total>0?Math.round((c.atendido)/c.total*100):0;
+    const anulPct = c.total>0?Math.round(c.anulado/c.total*100):0;
+    const s1Pct = c.total>0?Math.round(c.sillon1/c.total*100):0;
+    const mRows = c.manana.length>0
+      ? c.manana.map(h=>`<div class="hoy-row estado-${h.estado_cls}">${sillonTag(h.sillon)}<span class="hoy-hora">${h.hora}</span><span class="hoy-pac">${h.paciente.split(' ').slice(0,2).join(' ')}</span><span class="hoy-motivo">${h.motivo}</span></div>`).join('')
+      : `<div class="empty-msg">Sin citas mañana</div>`;
+    return `<div class="scard">
+      <div class="scard-head">
+        <div class="av" style="background:${c.color};width:40px;height:40px;font-size:13px">${initials(c.nombre)}</div>
+        <div class="scard-info">
+          <div class="scard-name">${c.fullname}</div>
+          <div class="scard-spec">Cirugía Plástica</div>
+          <div class="scard-suc" style="font-size:10px">${sucLabel(c.sucursales)}</div>
+        </div>
+        <span class="content-badge ${ws.cls}">${ws.txt}</span>
+      </div>
+      ${c.nota?`<div style="font-size:10px;color:var(--gold);background:rgba(251,191,36,.08);border-radius:6px;padding:5px 8px;margin-bottom:10px">${c.nota}</div>`:''}
+      <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
+        <div class="kpi"><div class="v">${c.total.toLocaleString()}</div><div class="l">Total hist.</div></div>
+        <div class="kpi"><div class="v" style="color:#a78bfa">${c.sillon1.toLocaleString()}</div><div class="l">S1 hist.</div></div>
+        <div class="kpi"><div class="v" style="color:var(--green)">${c.sillon2.toLocaleString()}</div><div class="l">S2 hist.</div></div>
+      </div>
+      <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
+        <div class="kpi"><div class="v" style="color:${convColor(c.conv_eval)}">${c.conv_eval}%</div><div class="l">Conv. eval</div></div>
+        <div class="kpi"><div class="v" style="color:var(--accent)">${c.evaluacion}</div><div class="l">Evaluaciones</div></div>
+        <div class="kpi"><div class="v" style="color:${noshow>15?'var(--red)':noshow>8?'var(--gold)':'var(--text)'}">${noshow}%</div><div class="l">No show %</div></div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:9px 12px;margin-bottom:10px">
+        <div style="font-size:9px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:7px">Funnel real (PACIENTES MADE)</div>
+        <div style="display:flex;align-items:center;gap:4px;font-size:11px">
+          <span style="color:var(--accent);font-weight:800">${c.eval_atendida}</span>
+          <span style="color:var(--text3)">eval atend.</span>
+          <span style="color:var(--text3);margin:0 2px">→</span>
+          <span style="color:#34d399;font-weight:800">${(c.ops_2025||0)+(c.ops_2026||0)}</span>
+          <span style="color:var(--text3)">operadas</span>
+          <span style="color:var(--text3);margin:0 2px">→</span>
+          <span style="font-weight:800;color:${(c.conv_real||0)<25?'var(--red)':(c.conv_real||0)<50?'var(--gold)':'var(--green)'}">${c.conv_real||0}%</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:5px;font-size:10px;color:var(--text3)">
+          <span>2025: <b style="color:var(--text2)">${c.ops_2025||0}</b> ops</span>
+          <span>2026: <b style="color:var(--text2)">${c.ops_2026||0}</b> ops</span>
+          <span style="margin-left:auto">${Math.round((c.ops_2026||0)/6*10)/10}/mes 2026</span>
+        </div>
+      </div>
+      ${c.ytd ? `<div style="background:rgba(255,255,255,.04);border-radius:8px;padding:9px 12px;margin-bottom:10px">
+        <div style="font-size:9px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">2026 YTD — Ene a Jun 2026</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;text-align:center;margin-bottom:7px">
+          <div><div style="font-size:14px;font-weight:800;color:var(--accent)">${c.ytd.s1}</div><div style="font-size:9px;color:var(--text3)">S1 agend.</div></div>
+          <div><div style="font-size:14px;font-weight:800;color:#34d399">${c.ytd.s1_ate}</div><div style="font-size:9px;color:var(--text3)">S1 atend.</div></div>
+          <div><div style="font-size:14px;font-weight:800;color:${c.ytd.conv<15?'var(--red)':c.ytd.conv<30?'var(--gold)':'var(--green)'}">${c.ytd.conv}%</div><div style="font-size:9px;color:var(--text3)">conv.</div></div>
+        </div>
+        <div style="display:flex;gap:8px;font-size:10px;color:var(--text3)">
+          <span>Total: <b style="color:var(--text2)">${c.ytd.total}</b></span>
+          <span>Aten: <b style="color:var(--green)">${c.ytd.atend}</b></span>
+          <span>Anul: <b style="color:var(--red)">${c.ytd.anul}</b></span>
+          <span style="margin-left:auto">${Math.round(c.ytd.s1/5.3*10)/10}/mes</span>
+        </div>
+      </div>` : ''}
+      <div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:4px"><span>Atendidos hist.</span><span>${atenPct}%</span></div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:${atenPct}%;background:var(--green)"></div></div>
+      </div>
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text2);margin-bottom:4px"><span>Tasa anulación</span><span>${anulPct}%</span></div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:${anulPct}%;background:var(--red)"></div></div>
+      </div>
+      <div style="font-size:10px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">Agenda Mié 10 Jun 2026</div>
+      <div class="hoy-list">${mRows}</div>
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════
+//  CONVERSIÓN TABLE
+// ════════════════════════════════════════════════════════
+let CUR_CONV_MES = -1;
+
+function renderConvTable(mesIdx){
+  CUR_CONV_MES = mesIdx;
+  const isMes = mesIdx >= 0;
+
+  const withConv = CIRUJANOS.map(c=>{
+    const ev  = isMes ? (c.meses_eval||[])[mesIdx]||0 : c.evaluacion;
+    const ate = isMes ? (c.meses_ate||[])[mesIdx]||0  : c.eval_atendida;
+    const conv = ev>0 ? Math.round(ate/ev*100) : 0;
+    return {...c, _ev:ev, _ate:ate, _conv:conv};
+  }).sort((a,b)=>b._conv-a._conv || b._ev-a._ev);
+
+  const rows = withConv.map((c,i)=>{
+    const rankCls = i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-n';
+    const noshow  = noShowRate(c);
+    const cr      = c.conv_real||0;
+    const crColor = cr<25?'var(--red)':cr<50?'var(--gold)':'var(--green)';
+    const evCol   = isMes ? `<span style="color:var(--accent);font-weight:700">${c._ev}</span>` : `<span style="color:var(--accent);font-weight:700">${c._ev}</span>`;
+    return `<tr>
+      <td><div class="rank-num ${rankCls}" style="margin:auto">${i+1}</div></td>
+      <td><div style="display:flex;align-items:center;gap:8px">
+        <div class="av" style="background:${c.color};width:28px;height:28px;font-size:10px">${initials(c.nombre)}</div>
+        <span>${c.nombre}</span>
+      </div></td>
+      <td style="color:var(--accent);font-weight:700">${c._ev}</td>
+      <td style="color:var(--green);font-weight:700">${c._ate}</td>
+      <td>
+        <div class="conv-bar-wrap"><div class="conv-bar-fill" style="width:${c._conv}%;background:${convColor(c._conv)}"></div></div>
+        <span style="font-weight:800;color:${convColor(c._conv)}">${c._conv}%</span>
+      </td>
+      <td style="font-weight:700">
+        <span style="color:#34d399">${c.ops_2026||0}</span>
+        <span style="color:var(--text3);font-size:10px"> '26</span>
+        <span style="color:var(--text3);font-size:10px;margin-left:4px">(${c.ops_2025||0} '25)</span>
+      </td>
+      <td>
+        <div class="conv-bar-wrap"><div class="conv-bar-fill" style="width:${Math.min(cr,100)}%;background:${crColor}"></div></div>
+        <span style="font-weight:800;color:${crColor}">${cr}%</span>
+      </td>
+      <td style="color:${noshow>10?'var(--red)':'var(--text2)'};">${noshow}%</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('conv-table').innerHTML=`
+    <thead><tr>
+      <th>#</th><th>Cirujano</th><th>Evals Agend.</th>
+      <th>Evals Atend.</th><th>Conv. Eval→Atend.</th>
+      <th>Operadas</th><th>Conv. Real (ops)</th>
+      <th>No Show</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>`;
+
+  // update chip styles
+  const CONV_LABELS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const btnTodos = document.getElementById('conv-chip--1');
+  if(btnTodos){
+    btnTodos.style.background = mesIdx===-1 ? 'var(--accent)' : 'var(--bg3)';
+    btnTodos.style.color      = mesIdx===-1 ? '#fff' : 'var(--text3)';
+  }
+  for(let i=0;i<12;i++){
+    const btn = document.getElementById('conv-chip-'+i);
+    if(!btn || i>TODAY_MES) continue;
+    btn.style.background = i===mesIdx ? '#a78bfa' : 'var(--bg3)';
+    btn.style.color      = i===mesIdx ? '#fff'    : 'var(--text3)';
+  }
+}
+
+function buildConversion(){
+  const CONV_LABELS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const chipBar = `<div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-bottom:14px">
+    <span style="font-size:10px;color:var(--text3);margin-right:2px">Mes:</span>
+    <button id="conv-chip--1" onclick="renderConvTable(-1)"
+      style="padding:3px 11px;border-radius:20px;border:none;cursor:pointer;font-size:11px;font-weight:700;background:var(--accent);color:#fff;transition:all .2s">
+      Todos
+    </button>
+    ${CONV_LABELS.map((m,i)=>{
+      const isFut = i > TODAY_MES;
+      return `<button id="conv-chip-${i}" ${!isFut?`onclick="renderConvTable(${i})"`:'disabled'}
+        style="padding:3px 11px;border-radius:20px;border:none;cursor:${isFut?'default':'pointer'};font-size:11px;font-weight:600;
+               background:${isFut?'rgba(255,255,255,.05)':'var(--bg3)'};color:${isFut?'rgba(255,255,255,.18)':'var(--text3)'};
+               transition:all .2s">${m}</button>`;
+    }).join('')}
+  </div>`;
+
+  const wrapper = document.getElementById('conv-table').parentElement;
+  const chipDiv = document.createElement('div');
+  chipDiv.innerHTML = chipBar;
+  wrapper.insertBefore(chipDiv, document.getElementById('conv-table'));
+
+  renderConvTable(-1);
+}
+
+// ════════════════════════════════════════════════════════
+//  CANALES VIEW
+// ════════════════════════════════════════════════════════
+const CANAL_CFG = [
+  {key:'online',    label:'Online',    color:'#38bdf8'},
+  {key:'marketing', label:'Marketing', color:'#a78bfa'},
+  {key:'ventas',    label:'Ventas',    color:'#fbbf24'},
+  {key:'recepcion', label:'Recepción', color:'#34d399'},
+  {key:'clinico',   label:'Clínico',   color:'#f87171'},
+];
+
+function buildCanales(){
+  // Meses con datos (hasta Jun inclusive; Jul+ son reservas futuras)
+  const mesesConDatos = CANAL_MENSUAL.slice(0, TODAY_MES + 1); // Ene–Jun
+  const tot = {online:0, marketing:0, ventas:0, recepcion:0, clinico:0};
+  mesesConDatos.forEach(m=>{ CANAL_CFG.forEach(c=>{ tot[c.key]+=(m[c.key]||0); }); });
+  const totalCitas = CANAL_CFG.reduce((a,c)=>a+tot[c.key],0);
+
+  // Summary cards
+  document.getElementById('canal-summary').innerHTML = CANAL_CFG.map(cfg=>{
+    const v = tot[cfg.key];
+    const pct = Math.round(v/totalCitas*100);
+    return `<div class="ins-card">
+      <div class="num" style="color:${cfg.color}">${v.toLocaleString()}</div>
+      <div class="lbl">${cfg.label}</div>
+      <div class="sub">${pct}% del total · Ene–Jun 2026</div>
+    </div>`;
+  }).join('') +
+  `<div class="ins-card">
+    <div class="num" style="color:var(--text)">${totalCitas.toLocaleString()}</div>
+    <div class="lbl">Total S1 CP</div>
+    <div class="sub">Cirugía Plástica · Ene–Jun 2026</div>
+  </div>`;
+
+  // Bar chart monthly — show all 12 months
+  const maxMes = Math.max(...CANAL_MENSUAL.map(m=>CANAL_CFG.reduce((a,c)=>a+(m[c.key]||0),0)));
+  document.getElementById('canal-chart').innerHTML = CANAL_MENSUAL.map((m,idx)=>{
+    const total = CANAL_CFG.reduce((a,c)=>a+(m[c.key]||0),0);
+    const pct = maxMes>0 ? total/maxMes*100 : 0;
+    const esActual = idx === TODAY_MES;
+    const esFuturo = idx > TODAY_MES;
+    const segments = CANAL_CFG.map(c=>{
+      const sp = total>0 ? m[c.key]/total*100 : 0;
+      return sp>0 ? `<div title="${c.label}: ${m[c.key]}" style="width:${sp}%;background:${c.color};height:100%;flex-shrink:0"></div>` : '';
+    }).join('');
+    const opacity = esActual ? '.65' : esFuturo ? '.35' : '1';
+    const label = esFuturo ? `<span style="color:var(--text3);font-size:10px">${total>0?total:'—'}</span>` : `<span style="font-size:11px;font-weight:700;color:var(--text)">${total}${esActual?'*':''}</span>`;
+    return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <div style="width:28px;font-size:10px;color:${esFuturo?'var(--text3)':'var(--text2)'};text-align:right;flex-shrink:0">${m.mes}</div>
+      <div style="flex:1;height:20px;background:var(--bg3);border-radius:4px;overflow:hidden;opacity:${opacity}">
+        <div style="display:flex;height:100%;width:${pct}%;transition:width .4s">${segments}</div>
+      </div>
+      <div style="width:28px;text-align:right">${label}</div>
+    </div>`;
+  }).join('') +
+  `<div style="font-size:10px;color:var(--text3);margin-top:4px">* Jun parcial · Jul–Dic = reservas ya ingresadas</div>
+   <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">${CANAL_CFG.map(c=>`<div style="display:flex;align-items:center;gap:4px;font-size:11px"><div style="width:10px;height:10px;border-radius:2px;background:${c.color}"></div>${c.label}</div>`).join('')}</div>`;
+
+  // Participation % bars (Ene–Jun)
+  document.getElementById('canal-pct-chart').innerHTML = CANAL_CFG.map(cfg=>{
+    const pct = Math.round(tot[cfg.key]/totalCitas*100);
+    const prom = Math.round(tot[cfg.key]/6);
+    return `<div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+        <span style="font-weight:700;color:${cfg.color}">${cfg.label}</span>
+        <span style="font-weight:800">${pct}%</span>
+      </div>
+      <div style="background:var(--bg3);border-radius:4px;height:10px;overflow:hidden">
+        <div style="width:${pct}%;height:100%;background:${cfg.color};border-radius:4px;transition:width .6s"></div>
+      </div>
+      <div style="font-size:10px;color:var(--text3);margin-top:3px">${tot[cfg.key].toLocaleString()} citas S1 · ~${prom}/mes promedio</div>
+    </div>`;
+  }).join('') +
+  `<div style="border-top:1px solid var(--border);padding-top:10px;margin-top:6px;font-size:11px;color:var(--text2)">Total S1 Cirugía Plástica Ene–Jun: <strong style="color:var(--text)">${totalCitas.toLocaleString()}</strong></div>`;
+
+  // Per-surgeon canal table
+  const conCitas = CIRUJANOS.filter(c=>c.semana_s1>0);
+  const sinCitas = CIRUJANOS.filter(c=>c.semana_s1===0);
+  let rows = conCitas.sort((a,b)=>b.semana_s1-a.semana_s1).map(c=>{
+    const cs = c.canal_sem;
+    const tot_s = (cs.online||0)+(cs.marketing||0)+(cs.recepcion||0);
+    const bars = CANAL_CFG.map(cfg=>{
+      const v = cs[cfg.key]||0;
+      const p = tot_s>0?v/tot_s*100:0;
+      return `<div style="display:flex;align-items:center;gap:4px;font-size:11px">
+        <div style="width:${Math.max(p*0.8,0)}px;min-width:${v>0?4:0}px;height:8px;background:${cfg.color};border-radius:2px"></div>
+        <span style="color:${cfg.color};font-weight:700">${v}</span>
+        <span style="color:var(--text3)">${cfg.label.slice(0,3)}</span>
+      </div>`;
+    }).join('');
+    const dom = CANAL_CFG.reduce((a,x)=>(cs[x.key]||0)>(cs[a.key]||0)?x:a, CANAL_CFG[0]);
+    return `<tr>
+      <td><div style="display:flex;align-items:center;gap:8px">
+        <div class="av" style="background:${c.color};width:28px;height:28px;font-size:10px">${initials(c.nombre)}</div>
+        <span style="font-size:13px;font-weight:600">${c.nombre}</span>
+      </div></td>
+      <td style="color:#a78bfa;font-weight:800;font-size:16px">${c.semana_s1}</td>
+      <td><div style="display:flex;gap:12px;flex-wrap:wrap">${bars}</div></td>
+      <td><span style="color:${dom.color};font-weight:700">${dom.label}</span></td>
+    </tr>`;
+  }).join('');
+
+  if(sinCitas.length){
+    rows += `<tr><td colspan="4" style="font-size:11px;color:var(--text3);padding:6px 14px">
+      Sin S1 esta semana: ${sinCitas.map(c=>c.nombre).join(' · ')}
+    </td></tr>`;
+  }
+
+  document.getElementById('canal-table').innerHTML=`
+    <thead><tr>
+      <th>Cirujano</th><th>S1 sem</th><th>Canal esta semana</th><th>Canal dominante</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>`;
+
+  // ── Sección de agendadores por canal ──
+  const MESES_SHORT  = ['E','F','M','A','M','J','J','A','S','O','N','D'];
+  const MESES_LABEL  = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const BOTS = new Set(['Vita_bot','Cero_bot']);
+  let CUR_AG_MODE = 'ag';
+  let CUR_AG_MES  = -1;
+
+  function buildPersonalCards(mode, mesIdx) {
+    const isMesFilter = mesIdx >= 0;
+
+    return CANAL_CFG.map(cfg=>{
+      const allPeople = AGENDADORES[cfg.label] || [];
+      const people = cfg.label==='Online' ? allPeople : allPeople.filter(p=>!BOTS.has(p.nombre));
+      if(!people.length) return '';
+
+      const getVal = (p) => isMesFilter
+        ? (mode==='ag' ? p.meses[mesIdx] : ((p.ate||[])[mesIdx]||0))
+        : (mode==='ag' ? p.total : (p.total_ate||0));
+      const getAte = (p) => isMesFilter ? ((p.ate||[])[mesIdx]||0) : (p.total_ate||0);
+      const getAg  = (p) => isMesFilter ? p.meses[mesIdx] : p.total;
+
+      const sorted  = [...people].sort((a,b)=>getVal(b)-getVal(a));
+      const cTotal  = sorted.reduce((a,p)=>a+getVal(p),0);
+      const allRows = CANAL_CFG.reduce((a,c)=>a+((AGENDADORES[c.label]||[]).filter(p=>!BOTS.has(p.nombre)).reduce((s,p)=>s+getVal(p),0)),0);
+
+      const personRows = sorted.map(p=>{
+        const total = getVal(p);
+        if(total===0 && mode==='ate') return '';
+        const color = mode==='ag' ? cfg.color : '#34d399';
+
+        let barsHTML = '';
+        if(isMesFilter){
+          const maxV = Math.max(...sorted.map(x=>getVal(x)), 1);
+          const h = Math.round(total/maxV*32);
+          barsHTML = `<div style="display:flex;align-items:flex-end;height:36px;flex:1"><div style="width:20px;height:${Math.max(h,total>0?3:0)}px;background:${color};border-radius:3px 3px 0 0;opacity:.9"></div></div>`;
+        } else {
+          const data = mode==='ag' ? p.meses : (p.ate||p.meses.map(()=>0));
+          const maxV = Math.max(...data, 1);
+          barsHTML = `<div style="display:flex;align-items:flex-end;gap:1px;height:36px;flex:1">${data.map((v,i)=>{const h=Math.round(v/maxV*26);const isFut=i>TODAY_MES;return `<div style="display:flex;flex-direction:column;align-items:center;gap:1px;width:18px"><span style="font-size:8px;color:${v>0&&!isFut?'var(--text2)':'transparent'}">${v>0&&!isFut?v:''}</span><div style="width:12px;height:${h}px;min-height:${v>0?2:0}px;background:${isFut?'rgba(255,255,255,.08)':color};border-radius:2px 2px 0 0;opacity:${isFut?.4:1}"></div></div>`;}).join('')}</div>`;
+        }
+
+        const ate_v    = getAte(p);
+        const ag_v     = getAg(p);
+        const conv_pct = ag_v>0?Math.round(ate_v/ag_v*100):0;
+        const cColor   = conv_pct>=60?'#34d399':conv_pct>=30?'#fbbf24':'#f87171';
+        return `<div style="display:flex;align-items:flex-end;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)"><div style="width:150px;font-size:12px;font-weight:600;color:var(--text);flex-shrink:0">${p.nombre}</div>${barsHTML}<div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;min-width:90px"><div style="font-size:13px;font-weight:800;color:${color}">${total} <span style="font-size:9px;font-weight:500;color:var(--text3)">${mode==='ag'?'ag':'ate'}</span></div>${mode==='ag'?`<div style="font-size:11px;color:var(--text2)">${ate_v} <span style="font-size:9px;color:var(--text3)">ate</span></div>`:''}<div style="font-size:10px;font-weight:700;color:${cColor};background:${cColor}22;padding:1px 5px;border-radius:4px">${conv_pct}%</div></div></div>`;
+      }).join('');
+      if(!personRows.trim()) return '';
+
+      const pct = allRows>0?Math.round(cTotal/allRows*100):0;
+      const headerMonth = isMesFilter ? ` · ${MESES_LABEL[mesIdx]}` : '';
+      return `<div style="background:var(--card);border:1px solid var(--border);border-left:3px solid ${cfg.color};border-radius:var(--r);overflow:hidden;margin-bottom:12px"><div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)"><div style="display:flex;align-items:center;gap:8px"><div style="width:10px;height:10px;border-radius:50%;background:${cfg.color}"></div><span style="font-size:13px;font-weight:800;color:${cfg.color}">${cfg.label}${headerMonth}</span></div><div style="font-size:12px;font-weight:700;color:var(--text)">${cTotal} <span style="font-size:10px;color:var(--text3)">(${pct}% del total)</span></div></div><div style="padding:0 16px 6px">${!isMesFilter?`<div style="display:flex;gap:2px;padding:6px 46px 2px 0;margin-bottom:2px;justify-content:flex-end">${MESES_SHORT.map((m,i)=>`<div style="width:18px;font-size:8px;text-align:center;color:${i>TODAY_MES?'rgba(255,255,255,.2)':'var(--text3)'}">${m}</div>`).join('')}</div>`:''} ${personRows}</div></div>`;
+    }).join('');
+  }
+
+  function renderAgViews(){
+    document.getElementById('ag-view').innerHTML  = buildPersonalCards('ag',  CUR_AG_MES);
+    document.getElementById('ate-view').innerHTML = buildPersonalCards('ate', CUR_AG_MES);
+    toggleAgView(CUR_AG_MODE);
+  }
+
+  document.getElementById('canal-agendadores').innerHTML = `
+    <div style="margin-bottom:12px">
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;align-items:center">
+        <span style="font-size:10px;color:var(--text3);margin-right:2px">Mes:</span>
+        <button id="mes-chip--1" onclick="filterAgMes(-1)"
+          style="padding:3px 11px;border-radius:20px;border:none;cursor:pointer;font-size:11px;font-weight:700;background:var(--accent);color:#fff;transition:all .2s">
+          Todos
+        </button>
+        ${MESES_LABEL.map((m,i)=>{
+          const isFut = i > TODAY_MES;
+          return `<button id="mes-chip-${i}" ${!isFut?`onclick="filterAgMes(${i})"`:'disabled'}
+            style="padding:3px 11px;border-radius:20px;border:none;cursor:${isFut?'default':'pointer'};font-size:11px;font-weight:600;background:${isFut?'rgba(255,255,255,.05)':'var(--bg3)'};color:${isFut?'rgba(255,255,255,.18)':'var(--text3)'};transition:all .2s">${m}</button>`;
+        }).join('')}
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button id="ag-toggle-btn" onclick="toggleAgView('ag')"
+          style="padding:6px 18px;border-radius:20px;border:none;cursor:pointer;font-size:12px;font-weight:700;background:var(--accent);color:#fff;transition:all .2s">
+          Agendadas
+        </button>
+        <button id="ate-toggle-btn" onclick="toggleAgView('ate')"
+          style="padding:6px 18px;border-radius:20px;border:none;cursor:pointer;font-size:12px;font-weight:700;background:var(--bg3);color:var(--text3);transition:all .2s">
+          Atendidas
+        </button>
+        <span style="font-size:10px;color:var(--text3);margin-left:4px">Solo personal · primeras consultas CP 2026</span>
+      </div>
+    </div>
+    <div id="ag-view">${buildPersonalCards('ag',-1)}</div>
+    <div id="ate-view" style="display:none">${buildPersonalCards('ate',-1)}</div>
+  `;
+}
+
+function toggleAgView(mode){
+  CUR_AG_MODE = mode;
+  document.getElementById('ag-view').style.display  = mode==='ag'  ? '' : 'none';
+  document.getElementById('ate-view').style.display = mode==='ate' ? '' : 'none';
+  document.getElementById('ag-toggle-btn').style.background  = mode==='ag'  ? 'var(--accent)' : 'var(--bg3)';
+  document.getElementById('ag-toggle-btn').style.color       = mode==='ag'  ? '#fff' : 'var(--text3)';
+  document.getElementById('ate-toggle-btn').style.background = mode==='ate' ? '#34d399' : 'var(--bg3)';
+  document.getElementById('ate-toggle-btn').style.color      = mode==='ate' ? '#fff' : 'var(--text3)';
+}
+
+function filterAgMes(idx){
+  CUR_AG_MES = idx;
+  const btnTodos = document.getElementById('mes-chip--1');
+  if(btnTodos){
+    btnTodos.style.background = idx===-1 ? 'var(--accent)' : 'var(--bg3)';
+    btnTodos.style.color      = idx===-1 ? '#fff' : 'var(--text3)';
+  }
+  for(let i=0;i<12;i++){
+    const btn = document.getElementById('mes-chip-'+i);
+    if(!btn) continue;
+    if(i > TODAY_MES) continue;
+    btn.style.background = i===idx ? '#a78bfa' : 'var(--bg3)';
+    btn.style.color      = i===idx ? '#fff'    : 'var(--text3)';
+  }
+  renderAgViews();
+}
+
+// ════════════════════════════════════════════════════════
+//  SUCURSALES VIEW
+// ════════════════════════════════════════════════════════
+function buildSucursales(){
+  // Build per-sucursal cirujano map
+  const sucCirMap = {};
+  Object.entries(CIR_SUC).forEach(([cid, sucs])=>{
+    Object.entries(sucs).forEach(([suc, d])=>{
+      if(!sucCirMap[suc]) sucCirMap[suc]=[];
+      const cir = CIRUJANOS.find(c=>c.id===cid);
+      if(cir) sucCirMap[suc].push({cir,d});
+    });
+  });
+
+  // Summary insight cards
+  const totalS1Act  = SUCURSALES.reduce((a,s)=>a+s.s1_act,0);
+  const totalS1Prox = SUCURSALES.reduce((a,s)=>a+s.s1_prox,0);
+  const actSucAct   = SUCURSALES.filter(s=>s.s1_act>0).length;
+  const actSucProx  = SUCURSALES.filter(s=>s.s1_prox>0).length;
+  const topSuc      = [...SUCURSALES].sort((a,b)=>b.s1_act-a.s1_act)[0];
+  const trend       = totalS1Prox>=totalS1Act?`↑ +${totalS1Prox-totalS1Act}`:`↓ ${totalS1Prox-totalS1Act}`;
+  const trendColor  = totalS1Prox>=totalS1Act?'var(--green)':'var(--red)';
+  document.getElementById('suc-insight-cards').innerHTML=`
+    <div class="ins-card"><div class="num" style="color:#a78bfa">${totalS1Act}</div><div class="lbl">S1 total esta semana</div><div class="sub">${actSucAct} sucursales activas</div></div>
+    <div class="ins-card"><div class="num" style="color:${trendColor}">${totalS1Prox}</div><div class="lbl">S1 próxima semana</div><div class="sub"><span style="color:${trendColor}">${trend}</span> vs. esta semana</div></div>
+    <div class="ins-card"><div class="num" style="color:var(--gold)">${topSuc.nombre}</div><div class="lbl">Sucursal líder</div><div class="sub">${topSuc.s1_act} S1 esta semana</div></div>
+    <div class="ins-card"><div class="num" style="color:var(--green)">${actSucProx}</div><div class="lbl">Activas próxima sem</div><div class="sub">Con al menos 1 S1</div></div>
+  `;
+
+  // Table rows
+  const rows = SUCURSALES.map(s=>{
+    const cirs = sucCirMap[s.nombre]||[];
+    const s1Color  = s.s1_act===0?'var(--text3)':s.s1_act<5?'var(--gold)':'var(--green)';
+    const s1pColor = s.s1_prox===0?'var(--text3)':s.s1_prox<5?'var(--gold)':'var(--green)';
+    const mainTag  = s.nombre==='Vitacura'?'<span style="font-size:9px;font-weight:700;background:rgba(124,106,245,.2);color:#a78bfa;border-radius:4px;padding:1px 5px;margin-left:5px">MAIN</span>':'';
+
+    const cirAvatars = cirs.length>0
+      ? `<div class="suc-cir-row">`+
+        cirs.map(({cir,d})=>
+          `<div class="suc-av" style="background:${cir.color}" title="${cir.nombre} — S1 sem:${d.s1} S2:${d.s2} | próx S1:${d.s1p} S2:${d.s2p}">${initials(cir.nombre)}</div>`
+        ).join('')+
+        `</div>`
+      : `<span style="color:var(--text3);font-size:11px">—</span>`;
+
+    const s1Bar = s.s1_act>0
+      ? `<div style="height:4px;width:${Math.min(s.s1_act/130*100,100)}%;background:${s1Color};border-radius:2px;margin-top:3px"></div>` : '';
+    const s1pBar = s.s1_prox>0
+      ? `<div style="height:4px;width:${Math.min(s.s1_prox/130*100,100)}%;background:${s1pColor};border-radius:2px;margin-top:3px"></div>` : '';
+
+    return `<tr>
+      <td>
+        <div style="font-size:13px;font-weight:700;display:flex;align-items:center">${s.nombre}${mainTag}</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px">${s.activos.toLocaleString()} activos hist · Jun: ${s.jun}</div>
+      </td>
+      <td style="min-width:80px">
+        <div style="font-size:18px;font-weight:800;color:${s1Color}">${s.s1_act||'—'}</div>
+        ${s1Bar}
+        ${s.s2_act>0?`<div style="font-size:10px;color:var(--green);margin-top:2px">+${s.s2_act} S2</div>`:''}
+      </td>
+      <td style="min-width:80px">
+        <div style="font-size:18px;font-weight:800;color:${s1pColor}">${s.s1_prox||'—'}</div>
+        ${s1pBar}
+        ${s.s2_prox>0?`<div style="font-size:10px;color:var(--green);margin-top:2px">+${s.s2_prox} S2</div>`:''}
+      </td>
+      <td>${cirAvatars}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('suc-table').innerHTML=`
+    <thead><tr>
+      <th>Sucursal</th>
+      <th>S1 esta sem <span style="font-weight:400;font-size:10px">8–14 Jun</span></th>
+      <th>S1 próx sem <span style="font-weight:400;font-size:10px">15–21 Jun</span></th>
+      <th>Cirujanos activos <span style="font-weight:400;font-size:10px">(hover = detalle)</span></th>
+    </tr></thead>
+    <tbody>${rows}</tbody>`;
+
+  // Build filter chips for cirujanos tab
+  const chips = ['TODAS',...SUC_CON_CIRUJANO];
+  document.getElementById('suc-filter').innerHTML = chips.map(s=>
+    `<button class="suc-chip${s==='TODAS'?' active':''}" onclick="filterSucursal(this,'${s}')">${s==='TODAS'?'🏥 Todas':s}</button>`
+  ).join('');
+}
+
+// ════════════════════════════════════════════════════════
+//  SUCURSAL FILTER (Cirujanos tab)
+// ════════════════════════════════════════════════════════
+let currentSuc = 'TODAS';
+function filterSucursal(btn, suc){
+  currentSuc = suc;
+  document.querySelectorAll('.suc-chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  renderCirujanoCards(suc==='TODAS' ? CIRUJANOS : CIRUJANOS.filter(c=>CIR_SUC_SEM[c.id]&&CIR_SUC_SEM[c.id][suc]));
+}
+
+// ════════════════════════════════════════════════════════
+//  TAB NAVIGATION
+// ════════════════════════════════════════════════════════
+function showTab(tab){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('view-'+tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ════════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════════
+function buildYTD(){
+  // Insight cards
+  const totalS1    = CIRUJANOS.reduce((s,c)=>s+(c.ytd?.s1||0),0);
+  const totalAte   = CIRUJANOS.reduce((s,c)=>s+(c.ytd?.s1_ate||0),0);
+  const totalAnul  = CIRUJANOS.reduce((s,c)=>s+(c.ytd?.anul||0),0);
+  const totalCitas = CIRUJANOS.reduce((s,c)=>s+(c.ytd?.total||0),0);
+  const convGlobal = totalS1>0?Math.round(totalAte/totalS1*100):0;
+  const anulPct    = totalCitas>0?Math.round(totalAnul/totalCitas*100):0;
+
+  document.getElementById('ytd-insight-cards').innerHTML = `
+    <div class="ins-card"><div class="num" style="color:var(--accent)">${totalS1.toLocaleString()}</div><div class="lbl">S1 agendadas 2026</div><div class="sub">Ene–Jun · todos los cirujanos</div></div>
+    <div class="ins-card"><div class="num" style="color:#34d399">${totalAte.toLocaleString()}</div><div class="lbl">S1 atendidas 2026</div><div class="sub">${convGlobal}% tasa de atención</div></div>
+    <div class="ins-card"><div class="num" style="color:var(--red)">${totalAnul.toLocaleString()}</div><div class="lbl">Citas canceladas 2026</div><div class="sub">${anulPct}% del total agendado</div></div>
+    <div class="ins-card"><div class="num" style="color:var(--gold)">${Math.round(totalS1/5.3)}</div><div class="lbl">Promedio S1/mes</div><div class="sub">Clínica completa 2026</div></div>
+  `;
+
+  // Tabla comparativa
+  const sorted = [...CIRUJANOS].filter(c=>c.ytd).sort((a,b)=>b.ytd.s1-a.ytd.s1);
+  const maxS1 = Math.max(...sorted.map(c=>c.ytd.s1),1);
+
+  let html = `<thead><tr>
+    <th>#</th><th>Cirujano</th>
+    <th>Total citas</th><th>S1 agend.</th><th>S1 atend.</th>
+    <th>Conv. atención</th><th>Operadas '26</th>
+    <th>Anuladas</th><th>S1/mes promedio</th>
+  </tr></thead><tbody>`;
+
+  sorted.forEach((c,i)=>{
+    const rankCls = i===0?'rank-gold':i===1?'rank-silver':i===2?'rank-bronze':'';
+    const convColor2 = c.ytd.conv<15?'var(--red)':c.ytd.conv<30?'var(--gold)':'var(--green)';
+    const anulPctC = c.ytd.total>0?Math.round(c.ytd.anul/c.ytd.total*100):0;
+    const sMes = Math.round(c.ytd.s1/5.3*10)/10;
+    const barW = Math.round(c.ytd.s1/maxS1*100);
+    html+=`<tr>
+      <td><div class="rank-num ${rankCls}" style="margin:auto">${i+1}</div></td>
+      <td><div style="display:flex;align-items:center;gap:8px">
+        <div class="av" style="background:${c.color};width:28px;height:28px;font-size:10px">${initials(c.nombre)}</div>
+        <div><div style="font-weight:600">${c.nombre}</div><div style="font-size:10px;color:var(--text3)">${sucLabel(c.sucursales)}</div></div>
+      </div></td>
+      <td style="font-weight:700;color:var(--text2)">${c.ytd.total}</td>
+      <td>
+        <div class="conv-bar-wrap"><div class="conv-bar-fill" style="width:${barW}%;background:var(--accent)"></div></div>
+        <span style="font-weight:800;color:var(--accent)">${c.ytd.s1}</span>
+      </td>
+      <td style="font-weight:700;color:#34d399">${c.ytd.s1_ate}</td>
+      <td>
+        <div class="conv-bar-wrap"><div class="conv-bar-fill" style="width:${Math.min(c.ytd.conv,100)}%;background:${convColor2}"></div></div>
+        <span style="font-weight:800;color:${convColor2}">${c.ytd.conv}%</span>
+      </td>
+      <td style="font-weight:700;color:#34d399">${c.ops_2026||0}</td>
+      <td style="color:${anulPctC>50?'var(--red)':anulPctC>35?'var(--gold)':'var(--text2)'};font-weight:700">${c.ytd.anul} <span style="font-weight:400;font-size:10px;color:var(--text3)">(${anulPctC}%)</span></td>
+      <td style="color:var(--text2)">${sMes}</td>
+    </tr>`;
+  });
+  html+='</tbody>';
+  document.getElementById('ytd-table').innerHTML=html;
+}
+
+
+function buildEmbudo(){
+  var phases=[
+    {id:'f0',num:'Fase 0',title:'Captación',cls:'c-ph-ok',badge:'✅ Funciona',rows:[
+      {icon:'🌐',text:'<strong>made.cl</strong> — formulario, llamada, WA, agenda online'},
+      {icon:'📸',text:'<strong>Instagram</strong> — link directo wa.me → Escala inbox'},
+      {icon:'📢',text:'<strong>Campañas Meta</strong> — leads CSV → importación manual a Escala'},
+    ]},
+    {id:'f1',num:'Fase 1',title:'Agendamiento de consulta',cls:'c-ph-gap',badge:'⚠️ Funciona a medias',rows:[
+      {icon:'✅',text:'<strong>Agenda online</strong>: Medilink → Make → Escala envía bienvenida automática'},
+      {icon:'⚠️',text:'<strong>Agendado manual</strong>: Make detecta pero "Medilink - Agendado Consulta" no tiene plantilla → solo asigna ejecutivo, no escribe al paciente'},
+      {icon:'🔁',text:'<strong>Leads Meta</strong>: CSV descargado manualmente → subido a Escala → envío personalizado. Requiere paso manual cada vez'},
+    ]},
+    {id:'f15',num:'Fase 1.5',title:'Confirmación de cita',cls:'c-ph-cero',badge:'🔴 PENDIENTE CRÍTICO',rows:[
+      {icon:'🔴',text:'<strong>CERO (+56 9 3140 2250)</strong>: confirma el día anterior a las 10am desde número externo. Reintento si no responde. Debe eliminarse.'},
+      {icon:'🔵',text:'<strong>Escala (objetivo)</strong>: reemplazar con "Antes de la fecha" usando +56 9 3266 2672. Requiere crear CP:Fecha Cita, CP:Hora, CP:Tipo, CP:Sucursal y sync vía Make.'},
+      {icon:'📋',text:'Aplica para: cirujano · enfermera · kinesióloga'},
+    ]},
+    {id:'f2',num:'Fase 2',title:'Atención consulta',cls:'c-ph-ok',badge:'✅ Funciona',rows:[
+      {icon:'💬',text:'Recepción (Mariel Aereboe) maneja inbox: direcciones, estacionamiento, cambio de hora'},
+      {icon:'❌',text:'Si paciente anula: Escala envía automáticamente botones "Vuelve a agendar / Contactar recepción / Quiero que me llamen"'},
+    ]},
+    {id:'f21',num:'Fase 2.1',title:'Ejecutiva y presupuesto',cls:'c-ph-gap',badge:'⚠️ Brechas detectadas',rows:[
+      {icon:'✅',text:'Cirujano cambia estado "Atendida cirujano KL/HC/PS" → Make → Escala asigna ejecutiva y envía presentación automática'},
+      {icon:'✅',text:'Ejecutiva puede marcar "Lo está pensando" → secuencia de reenganche con botones'},
+      {icon:'⚠️',text:'<strong>Falta:</strong> recordatorio automático a las 72h sin respuesta'},
+      {icon:'⚠️',text:'<strong>Falta:</strong> pacientes no candidatas a cirugía no entran al CRM → se pierden. Solución: abrir Oportunidad "Lo está pensando" al cambiar ese estado'},
+    ]},
+    {id:'f3',num:'Fase 3', title:'Cirugía agendada',cls:'c-ph-ok',badge:'✅ Funciona',rows:[
+      {icon:'✅',text:'Paciente abona $300.000 → se agenda en Medilink → Make detecta → Escala asigna enfermera prequirúrjica'},
+    ]},
+    {id:'f4',num:'Fase 4',title:'PreQuirúrgico',cls:'c-ph-cero',badge:'🔴 Confirmaciones CERO*rows:[
+      {icon:'✅',text:'Enfermera acompaña vía inbox Escala: exámenes, indicaciones, dudas'},
+      {icon:'🔴',text:'<strong>Confirmaciones de controles prequirúrgicos</strong>: actualmente CERO → migrar a Escala (mismo proceso que Fase 1.5)'},
+    ]},
+    {id:'f5',num:'Fase 5',title:'Cirugía realizada',cls:'c-ph-ok',badge:'✅ Funciona',rows:[
+      {icon:'✅',text:'Enfermera marca "Atendida cirugía" en Medilink con sus iniciales (MK/CM/AM) → Make → Escala asigna EU'},
+    ]},
+    {id:'f6',num:'Fase 6',title:'Postquirúrgico',cls:'c-ph-cero',badge:'🔴 Confirmaciones CERO',rows:[
+      {icon:'✅',text:'A 48h post-cirugía Escala envía plantilla de seguimiento → enfermera maneja inbox directamente'},
+      {icon:'🔴',text:'<strong>Confirmaciones de controles</strong> (kinesiología/enfermería): CERO hoy → migrar a Escala "Antes de la fecha"'},
+      {icon:'✅',text:'Urgencias: inbox EU + número emergencias +56 9 4024 0296'},
+    ]},
+    {id:'f7',num:'Fase 7',title:'Alta Médica',cls:'c-ph-ok',badge:'✅ Funciona',rows:[
+      {icon:'✅',text:'Cirujano marca "Dado de alta" → Make → Escala reasig
