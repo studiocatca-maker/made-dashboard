@@ -405,7 +405,7 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20p
         <div class="pend-num" style="background:#1a3a2a;color:#4ade80">④</div>
         <div class="pend-body">
           <div class="pend-title">Flujos Escala</div>
-          <div class="pend-sub">Recordatorio día anterior · Confirmación · Reintento 24h · Post plantillas</div>
+          <div class="pend-sub>Recordatorio día anterior · Confirmación · Reintento 24h · Post plantillas</div>
         </div>
       </div>
       <div class="pend-step" style="margin-bottom:0">
@@ -417,7 +417,7 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20p
       </div>
 
       <div class="num-map">
-        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:10px">Mapa de números WA</div>
+         <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:10px">Mapa de números WA</div>
         <div class="num-row">
           <span class="num-pill" style="background:#3a1a1a;color:#f87171">ELIMINAR</span>
           <span class="num-desc"><strong>+56 9 3140 2250</strong><br>CERO — bot confirmaciones</span>
@@ -682,7 +682,7 @@ const SUCURSALES = [
   {id:'ANT', nombre:'Antofagasta',   total:792,   activos:467,   jun:18,  s1_act:2,   s2_act:0,  s1_prox:0,   s2_prox:0},
   {id:'SER', nombre:'La Serena',     total:742,   activos:501,   jun:16,  s1_act:0,   s2_act:0,  s1_prox:15,  s2_prox:0},
   {id:'COP', nombre:'Copiapó',       total:284,   activos:186,   jun:13,  s1_act:11,  s2_act:0,  s1_prox:0,   s2_prox:0},
-  {id:'PRO', nombre:'Providencia',   total:319,   activos:140,   jun:10,  s1_act:4,   s2_act:0,  s1_prox:0,   s2_prox:0},
+  {id:'PRO', nombre:'Providencia',   total:319,   activos:40,    jun:10,  s1_act:4,   s2_act:0,  s1_prox:0,   s2_prox:0},
   {id:'INY', nombre:'Inyectables',   total:99,    activos:69,    jun:1,   s1_act:1,   s2_act:0,  s1_prox:0,   s2_prox:0},
   {id:'PMT', nombre:'Pto. Montt',    total:244,   activos:121,   jun:0,   s1_act:0,   s2_act:0,  s1_prox:0,   s2_prox:0},
   {id:'VIN', nombre:'Viña del Mar',  total:135,   activos:85,    jun:0,   s1_act:0,   s2_act:0,  s1_prox:0,   s2_prox:0},
@@ -704,7 +704,7 @@ const CIR_SUC = {
   'MJH':{'Vitacura':{s1:0,s2:0,s1p:2,s2p:0}},
   'DM': {'Vitacura':{s1:3,s2:0,s1p:0,s2p:0}},
 };
-const CIR_SUC_SEM = {
+const CIR_SUC_SEMA= {
   'PC': {
     'Antofagasta': [0, 0, 0, 0, 0, 0, 1, 0, 0],
     'La Serena':   [0,14, 0, 0, 0, 2, 0, 0, 0],
@@ -832,7 +832,7 @@ function convColor(c){ return c>=35?'var(--green)':c>=20?'var(--gold)':'var(--re
 function weekStatus(n){
   // n = semana_s1 (nuevos pacientes cirugía plástica)
   if(n===0) return {cls:'badge-alert',txt:'⚠ Sin S1'};
-  if(n<=2)  return {cls:'badge-warn', txt:'📉 S1 bajo'};
+  if(n<=2)  return {clr:'badge-warn', txt:'📉 S1 bajo'};
   if(n<=8)  return {cls:'badge-warn', txt:'📊 S1 medio'};
   return {cls:'badge-ok',txt:'✅ S1 activo'};
 }
@@ -1013,7 +1013,7 @@ function renderSemanalTable(){
       </td>
       ${weeks.map((n,i)=>{
         const cls = heatClass(n, maxW||20);
-        return `<td><div class="heat-cell ${cls}" title="${n} citas S1${currentSemanalSuc?' en '+currentSemanalSuc:''}">${n>0?n:'–'}</div></td>`;
+        return `<td><div class="heat-cell ${cls}" title="${ne citas S1${currentSemanalSuc?' en '+currentSemanalSuc:''}">${n>0?n:'–'}</div></td>`;
       }).join('')}
       <td><span style="font-weight:800;color:${convColor(c.conv_eval)}">${c.conv_eval}%</span></td>
       <td style="white-space:nowrap"><span style="color:#a78bfa;font-weight:800">${currentSemanalSuc?(CIR_SUC_SEM[c.id]&&CIR_SUC_SEM[c.id][currentSemanalSuc]?CIR_SUC_SEM[c.id][currentSemanalSuc][0]:0):c.semana_s1}</span><span style="color:var(--text3);font-size:10px"> S1</span> <span style="color:var(--green);font-weight:700">${c.semana_s2}</span><span style="color:var(--text3);font-size:10px"> S2</span></td>
@@ -1340,7 +1340,7 @@ function buildCanales(){
 
       const sorted  = [...people].sort((a,b)=>getVal(b)-getVal(a));
       const cTotal  = sorted.reduce((a,p)=>a+getVal(p),0);
-      const allRows = CANAL_CFG.reduce((a,c)=>a+((AGENDADORES[c.label]||[]).filter(p=>!BOTS.has(p.nombre)).reduce((s,p)=>s+getVal(p),0)),0);
+      const allRows = CAYAL_CFG.reduce((a,c)=>a+((AGENDADORES[c.label]||[]).filter(p=>!BOTS.has(p.nombre)).reduce((s,p)=>s+getVal(p),0)),0);
 
       const personRows = sorted.map(p=>{
         const total = getVal(p);
@@ -1616,7 +1616,7 @@ function buildEmbudo(){
       {icon:'🔁',text:'<strong>Leads Meta</strong>: CSV descargado manualmente → subido a Escala → envío personalizado. Requiere paso manual cada vez'},
     ]},
     {id:'f15',num:'Fase 1.5',title:'Confirmación de cita',cls:'c-ph-cero',badge:'🔴 PENDIENTE CRÍTICO',rows:[
-      {icon:'🔴',text:'<strong>CERO (+56 9 3140 2250)</strong>: confirma el día anterior a las 10am desde número externo. Reintento si no responde. Debe eliminarse.'},
+      {icon:'🔴',text:'<strong>CERO@(+56 9 3140 2250)</strong>: confirma el día anterior a las 10am desde número externo. Reintento si no responde. Debe eliminarse.'},
       {icon:'🔵',text:'<strong>Escala (objetivo)</strong>: reemplazar con "Antes de la fecha" usando +56 9 3266 2672. Requiere crear CP:Fecha Cita, CP:Hora, CP:Tipo, CP:Sucursal y sync vía Make.'},
       {icon:'📋',text:'Aplica para: cirujano · enfermera · kinesióloga'},
     ]},
@@ -1630,20 +1630,62 @@ function buildEmbudo(){
       {icon:'⚠️',text:'<strong>Falta:</strong> recordatorio automático a las 72h sin respuesta'},
       {icon:'⚠️',text:'<strong>Falta:</strong> pacientes no candidatas a cirugía no entran al CRM → se pierden. Solución: abrir Oportunidad "Lo está pensando" al cambiar ese estado'},
     ]},
-    {id:'f3',num:'Fase 3', title:'Cirugía agendada',cls:'c-ph-ok',badge:'✅ Funciona',rows:[
+    {id:'f3',num:'Fase 3',title:'Cirugía agendada',cls:'c-ph-ok',badge:'✅ Funciona',rows:[
       {icon:'✅',text:'Paciente abona $300.000 → se agenda en Medilink → Make detecta → Escala asigna enfermera prequirúrjica'},
     ]},
-    {id:'f4',num:'Fase 4',title:'PreQuirúrgico',cls:'c-ph-cero',badge:'🔴 Confirmaciones CERO*rows:[
+    {id:'f4',num:'Fase 4',title:'PreQuirúrgico',cls:'c-ph-cero',badge:'🔴 Confirmaciones CERO',rows:[
       {icon:'✅',text:'Enfermera acompaña vía inbox Escala: exámenes, indicaciones, dudas'},
-      {icon:'🔴',text:'<strong>Confirmaciones de controles prequirúrgicos</strong>: actualmente CERO → migrar a Escala (mismo proceso que Fase 1.5)'},
+      {icon:'🔴',text:'<strong>Confirmaciones de controles prequirvúrgicos</strong>: actualmente CERO → migrar a Escala (mismo proceso que Fase 1.5)'},
     ]},
     {id:'f5',num:'Fase 5',title:'Cirugía realizada',cls:'c-ph-ok',badge:'✅ Funciona',rows:[
       {icon:'✅',text:'Enfermera marca "Atendida cirugía" en Medilink con sus iniciales (MK/CM/AM) → Make → Escala asigna EU'},
     ]},
     {id:'f6',num:'Fase 6',title:'Postquirúrgico',cls:'c-ph-cero',badge:'🔴 Confirmaciones CERO',rows:[
       {icon:'✅',text:'A 48h post-cirugía Escala envía plantilla de seguimiento → enfermera maneja inbox directamente'},
-      {icon:'🔴',text:'<strong>Confirmaciones de controles</strong> (kinesiología/enfermería): CERO hoy → migrar a Escala "Antes de la fecha"'},
+      {icon:'🔴',text:<strong>Confirmaciones de controles</strong> (kinesiología/enfermería): CERO hoy → migrar a Escala "Antes de la fecha"'},
       {icon:'✅',text:'Urgencias: inbox EU + número emergencias +56 9 4024 0296'},
     ]},
     {id:'f7',num:'Fase 7',title:'Alta Médica',cls:'c-ph-ok',badge:'✅ Funciona',rows:[
-      {icon:'✅',text:'Cirujano marca "Dado de alta" → Make → Escala reasig
+      {icon:'✅',text:'Cirujano marca "Dado de alta" → Make → Escala reasigna a estado "Alta Médica" · secuencia de reenganche automática'},
+    ]},
+  ];
+
+  let html = '';
+  phases.forEach((p, idx) => {
+    const rowsHtml = p.rows.map(r =>
+      `<div class="emb-row"><div class="emb-row-icon">${r.icon}</div><div>${r.text}</div></div>`
+    ).join('');
+    html += `
+      <div class="emb-phase">
+        <div class="emb-phase-header ${p.cls}"
+             onclick="const b=this.nextElementSibling;b.style.display=b.style.display==='none'?'flex':'none'">
+          <span class="emb-phase-num">${p.num}</span>
+          <span class="emb-phase-title">${p.title}</span>
+          <span class="emb-phase-badge">${p.badge}</span>
+        </div>
+        <div class="emb-phase-body" style="display:flex;flex-direction:column;gap:10px">${rowsHtml}</div>
+      </div>
+      ${idx < phases.length-1 ? '<div class="emb-connector"></div>' : ''}
+    `;
+  });
+  document.getElementById('embudo-flow').innerHTML = html;
+}
+
+// ════════════════════════════════════════════════════════
+//  INIT — llamar todas las funciones al cargar
+// ════════════════════════════════════════════════════════
+(function init(){
+  buildBanner();
+  buildResumen();
+  buildConversion();
+  buildCanales();
+  buildSucursales();
+  buildYTD();
+  buildEmbudo();
+  // Actualizar estado live
+  const ls = document.getElementById('live-status');
+  if(ls) ls.textContent = '✅ Datos actualizados';
+})();
+</script>
+</body>
+</html>
