@@ -101,6 +101,12 @@ header.stuck{border-bottom-color:var(--line);box-shadow:0 6px 24px -18px rgba(25
 }
 .nav-links a:hover{color:var(--violet-dark)}
 .nav-links a:hover::after{transform:scaleX(1)}
+.nav-links a.hot{
+  color:var(--violet-dark);font-weight:700;
+  background:var(--violet-soft);border-radius:999px;padding:5px 14px;margin:-5px 0;
+}
+.nav-links a.hot::after{display:none}
+.nav-links a.hot:hover{background:#E4DEFE}
 
 /* ============ BUTTONS ============ */
 .btn{
@@ -117,6 +123,8 @@ header.stuck{border-bottom-color:var(--line);box-shadow:0 6px 24px -18px rgba(25
 .btn-accent:hover{background:var(--violet-dark)}
 .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
 .btn-ghost:hover{border-color:var(--ink);background:#fff}
+.btn-light{background:#fff;color:var(--ink);box-shadow:0 12px 30px -14px rgba(0,0,0,.6)}
+.btn-light:hover{background:#F3F0FF;color:var(--violet-dark)}
 .btn-sm{font-size:14px;padding:10px 18px}
 .btn svg{width:17px;height:17px;flex-shrink:0}
 
@@ -282,7 +290,15 @@ section{scroll-margin-top:84px}
   color:var(--ink);margin-bottom:8px;letter-spacing:-.01em;
 }
 
-/* calculadora */
+/* calculadora — sección protagonista */
+.calc-sec{
+  position:relative;padding-top:8px;
+  background:linear-gradient(180deg,rgba(244,236,225,.45),rgba(251,249,246,0) 55%);
+}
+.calc-head{max-width:36em;margin:0 auto 32px;text-align:center}
+.calc-head .eyebrow{justify-content:center}
+.calc-head h2{font-size:clamp(29px,4.6vw,44px);margin-top:14px}
+.calc-head p{margin-top:16px;font-size:17px;color:var(--ink-2)}
 .calc{
   background:linear-gradient(165deg,#211D42,#191633 60%,#231E45);
   border-radius:var(--r-lg);padding:30px 24px;color:#fff;position:relative;overflow:hidden;
@@ -294,10 +310,9 @@ section{scroll-margin-top:84px}
   background:radial-gradient(circle,rgba(167,139,250,.28),transparent 70%);
 }
 .calc-inner{position:relative;display:grid;gap:30px}
-@media(min-width:860px){.calc-inner{grid-template-columns:1fr 1fr;gap:44px;align-items:center}}
-.calc h2{font-size:clamp(24px,3.4vw,32px);color:#fff}
-.calc .eyebrow{color:#C4B8FF}
-.calc > .calc-inner p.sub{color:rgba(255,255,255,.72);font-size:15px;margin-top:14px}
+@media(min-width:860px){.calc-inner{grid-template-columns:.95fr 1.05fr;gap:44px;align-items:center}}
+.calc-title{font-size:22px;color:#fff}
+.calc p.sub{color:rgba(255,255,255,.72);font-size:15px;margin-top:12px}
 .fields{display:grid;gap:14px;grid-template-columns:1fr 1fr;margin-top:24px}
 .field{display:flex;flex-direction:column;gap:7px}
 .field.full{grid-column:1/-1}
@@ -324,7 +339,7 @@ section{scroll-margin-top:84px}
 }
 .result .rlbl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:700}
 .result .rnum{
-  font-family:'Fraunces',serif;font-size:56px;font-weight:600;line-height:1;
+  font-family:'Fraunces',serif;font-size:clamp(56px,9vw,72px);font-weight:600;line-height:1;
   letter-spacing:-.03em;margin-top:10px;font-variant-numeric:tabular-nums;
 }
 .result .rnum span{font-size:20px;color:rgba(255,255,255,.5);margin-left:6px;letter-spacing:0}
@@ -352,6 +367,21 @@ section{scroll-margin-top:84px}
 .verdict.info{color:rgba(255,255,255,.75)}
 .verdict.info svg{color:#C4B8FF}
 .verdict strong{font-weight:700}
+
+/* CTA de agenda: solo visible cuando el IMC está dentro del límite */
+.calc-cta{
+  display:flex;width:100%;margin-top:16px;
+  animation:pop .45s cubic-bezier(.2,.8,.3,1.1) both;
+}
+.calc-cta[hidden]{display:none}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+.calc-alt{
+  display:block;margin-top:14px;text-align:center;font-size:13.5px;font-weight:600;
+  color:rgba(255,255,255,.62);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:rgba(255,255,255,.3);transition:color .18s;
+}
+.calc-alt:hover{color:#fff}
+.calc-alt[hidden]{display:none}
 
 /* exclusiones */
 .excl{display:grid;gap:12px;counter-reset:x}
@@ -464,14 +494,14 @@ footer .brand-txt span{color:rgba(255,255,255,.45)}
       </span>
     </a>
     <nav class="nav-links" aria-label="Secciones">
+      <a class="hot" href="#calculadora">¿Califico?</a>
       <a href="#que-es">La cirugía</a>
       <a href="#bono-pad">Bono PAD</a>
       <a href="#requisitos">Requisitos</a>
-      <a href="#calculadora">Calcula tu IMC</a>
       <a href="#beneficios">Beneficios</a>
     </nav>
-    <a class="btn btn-accent btn-sm" data-cta="agenda" href="#contacto">
-      Agendar evaluación
+    <a class="btn btn-accent btn-sm" data-cta="agenda" href="#">
+      Agendar hora
     </a>
   </div>
 </header>
@@ -491,11 +521,11 @@ footer .brand-txt span{color:rgba(255,255,255,.45)}
             Bono PAD de Fonasa, con un valor único definido previamente.
           </p>
           <div class="hero-actions">
-            <a class="btn btn-primary" data-cta="agenda" href="#contacto">
-              Agendar evaluación
+            <a class="btn btn-primary" href="#calculadora">
+              Calcula si calificas
               <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
             </a>
-            <a class="btn btn-ghost" href="#requisitos">Ver requisitos</a>
+            <a class="btn btn-ghost" data-cta="agenda" href="#">Agendar hora</a>
           </div>
           <div class="trust">
             <span class="chip"><svg aria-hidden="true"><use href="#i-check"></use></svg> Tramos B, C y D de Fonasa</span>
@@ -530,6 +560,79 @@ footer .brand-txt span{color:rgba(255,255,255,.45)}
             El Bono PAD no incluye procedimientos quirúrgicos adicionales, como la liposucción.
           </p>
         </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CALCULADORA (protagonista) ===== -->
+  <section class="sec calc-sec" id="calculadora">
+    <div class="wrap">
+      <div class="calc-head rv">
+        <span class="eyebrow">Paso 1 · Toma 10 segundos</span>
+        <h2>Descubre si calificas para el Bono PAD</h2>
+        <p>
+          El IMC es el requisito que más dudas genera. Ingresa tus datos y te decimos al
+          instante si estás dentro del límite que corresponde a tu edad.
+        </p>
+      </div>
+
+      <div class="calc rv">
+        <div class="calc-inner">
+          <div>
+            <h3 class="calc-title">Calculadora de IMC</h3>
+            <p class="sub">
+              Índice de Masa Corporal = peso (kg) ÷ estatura (m)². Puedes ingresar tu estatura
+              en centímetros o en metros.
+            </p>
+            <form class="fields" id="imc-form" novalidate>
+              <!-- type="text" + inputmode: así se acepta la coma decimal (1,60) y se abre el teclado numérico -->
+              <div class="field">
+                <label for="peso">Peso</label>
+                <div class="input-wrap">
+                  <input id="peso" name="peso" type="text" inputmode="decimal" autocomplete="off" maxlength="6" placeholder="60">
+                  <span class="unit">kg</span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="estatura">Estatura</label>
+                <div class="input-wrap">
+                  <input id="estatura" name="estatura" type="text" inputmode="decimal" autocomplete="off" maxlength="6" placeholder="160">
+                  <span class="unit">cm o m</span>
+                </div>
+              </div>
+              <div class="field full">
+                <label for="edad">Edad</label>
+                <div class="input-wrap">
+                  <input id="edad" name="edad" type="text" inputmode="numeric" autocomplete="off" maxlength="3" placeholder="38">
+                  <span class="unit">años</span>
+                </div>
+              </div>
+            </form>
+            <p class="calc-note">
+              El cálculo es orientativo y no reemplaza la evaluación médica, que es la que
+              confirma el cumplimiento de los requisitos.
+            </p>
+          </div>
+
+          <div class="result" aria-live="polite">
+            <span class="rlbl">Tu IMC</span>
+            <div class="rnum" id="imc-num">—</div>
+            <div class="gauge"><i id="imc-bar"></i><b id="imc-tick" hidden></b></div>
+            <div class="gauge-legend"><span>15</span><span id="imc-limit-lbl">Límite 30</span><span>40</span></div>
+            <div class="verdict info" id="imc-verdict">
+              <svg aria-hidden="true"><use href="#i-info"></use></svg>
+              <span>Completa peso, estatura y edad para ver tu resultado.</span>
+            </div>
+
+            <!-- Aparece solo cuando el IMC está dentro del límite -->
+            <a class="btn btn-light calc-cta" id="imc-cta" data-cta="campana" href="#" hidden>
+              <svg aria-hidden="true"><use href="#i-cal"></use></svg>
+              Agendar hora · Bono PAD Abdomen Flácido
+            </a>
+            <!-- Alternativa cuando no cumple el límite o falta información -->
+            <a class="calc-alt" id="imc-alt" href="#contacto" hidden>Conversar con nuestro equipo</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -625,64 +728,8 @@ footer .brand-txt span{color:rgba(255,255,255,.45)}
     </div>
   </section>
 
-  <!-- ===== CALCULADORA ===== -->
-  <section class="sec" id="calculadora">
-    <div class="wrap">
-      <div class="calc rv">
-        <div class="calc-inner">
-          <div>
-            <span class="eyebrow">Calculadora</span>
-            <h2>Calcula tu Índice de Masa Corporal</h2>
-            <p class="sub">
-              Ingresa tus datos y revisa de inmediato si tu IMC está dentro del límite que exige
-              el programa para tu grupo de edad.
-            </p>
-            <form class="fields" id="imc-form" novalidate>
-              <div class="field">
-                <label for="peso">Peso</label>
-                <div class="input-wrap">
-                  <input id="peso" name="peso" type="number" inputmode="decimal" min="30" max="300" step="0.1" placeholder="60">
-                  <span class="unit">kg</span>
-                </div>
-              </div>
-              <div class="field">
-                <label for="estatura">Estatura</label>
-                <div class="input-wrap">
-                  <input id="estatura" name="estatura" type="number" inputmode="decimal" min="120" max="230" step="1" placeholder="160">
-                  <span class="unit">cm</span>
-                </div>
-              </div>
-              <div class="field full">
-                <label for="edad">Edad</label>
-                <div class="input-wrap">
-                  <input id="edad" name="edad" type="number" inputmode="numeric" min="15" max="99" step="1" placeholder="38">
-                  <span class="unit">años</span>
-                </div>
-              </div>
-            </form>
-            <p class="calc-note">
-              El cálculo es orientativo y no reemplaza la evaluación médica, que es la que
-              confirma el cumplimiento de los requisitos.
-            </p>
-          </div>
-
-          <div class="result" aria-live="polite">
-            <span class="rlbl">Tu IMC</span>
-            <div class="rnum" id="imc-num">—</div>
-            <div class="gauge"><i id="imc-bar"></i><b id="imc-tick" hidden></b></div>
-            <div class="gauge-legend"><span>15</span><span id="imc-limit-lbl">Límite 30</span><span>40</span></div>
-            <div class="verdict info" id="imc-verdict">
-              <svg aria-hidden="true"><use href="#i-info"></use></svg>
-              <span>Completa peso, estatura y edad para ver tu resultado.</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ===== EXCLUSIONES ===== -->
-  <section class="sec alt" id="exclusiones">
+  <section class="sec" id="exclusiones">
     <div class="wrap">
       <div class="sec-head rv">
         <span class="eyebrow">A tener en cuenta</span>
@@ -700,7 +747,7 @@ footer .brand-txt span{color:rgba(255,255,255,.45)}
   </section>
 
   <!-- ===== BENEFICIOS ===== -->
-  <section class="sec" id="beneficios">
+  <section class="sec alt" id="beneficios">
     <div class="wrap">
       <div class="sec-head rv">
         <span class="eyebrow">Resultados</span>
@@ -754,15 +801,18 @@ footer .brand-txt span{color:rgba(255,255,255,.45)}
           la cirugía y la recuperación.
         </p>
         <div class="cta-actions">
-          <a class="btn btn-accent" data-cta="whatsapp" href="#">
+          <a class="btn btn-accent" data-cta="agenda-online" href="#">
+            <svg aria-hidden="true"><use href="#i-cal"></use></svg>
+            Agendar hora · Bono PAD Abdomen Flácido
+          </a>
+          <a class="btn btn-ghost" data-cta="whatsapp" href="#">
             <svg aria-hidden="true"><use href="#i-wa"></use></svg>
             Escribir por WhatsApp
           </a>
-          <a class="btn btn-ghost" data-cta="agenda-online" href="#">
-            <svg aria-hidden="true"><use href="#i-cal"></use></svg>
-            Agendar en línea
-          </a>
         </div>
+        <p class="small" style="margin-top:18px">
+          ¿Aún no sabes si calificas? <a href="#calculadora" style="color:var(--violet-dark);font-weight:600;text-decoration:underline;text-underline-offset:3px">Calcula tu IMC</a>.
+        </p>
         <p class="small" style="margin-top:22px">
           Valores referenciales. Sujeto a evaluación médica y a las condiciones vigentes del programa PAD de Fonasa.
         </p>
@@ -814,7 +864,8 @@ footer .brand-txt span{color:rgba(255,255,255,.45)}
 const CONTACTO = {
   whatsapp: "",                       // ej: "56912345678"
   mensaje:  "Hola, quiero información sobre la abdominoplastia con Bono PAD Fonasa.",
-  agendaUrl: "https://made.cl"        // ej: "https://made.cl/agenda"
+  // Formulario de agenda de la campaña "Bono PAD - Abdomen Flácido"
+  agendaUrl: "https://ff.healthatom.io/wXNVjA"
 };
 
 (function () {
@@ -829,10 +880,10 @@ const CONTACTO = {
     if (waHref) { el.href = waHref; el.target = "_blank"; el.rel = "noopener"; }
     else { el.href = "#contacto"; }
   });
-  document.querySelectorAll('[data-cta="agenda"],[data-cta="agenda-online"]').forEach(function (el) {
-    if (el.dataset.cta === "agenda-online" && CONTACTO.agendaUrl) {
+  document.querySelectorAll('[data-cta="agenda"],[data-cta="agenda-online"],[data-cta="campana"]').forEach(function (el) {
+    if (CONTACTO.agendaUrl) {
       el.href = CONTACTO.agendaUrl; el.target = "_blank"; el.rel = "noopener";
-    } else if (el.dataset.cta === "agenda") {
+    } else {
       el.href = "#contacto";
     }
   });
@@ -872,6 +923,8 @@ const CONTACTO = {
   const $limit = document.getElementById("imc-limit-lbl");
   const $tick  = document.getElementById("imc-tick");
   const $verd  = document.getElementById("imc-verdict");
+  const $cta   = document.getElementById("imc-cta");
+  const $alt   = document.getElementById("imc-alt");
 
   const GAUGE_MIN = 15, GAUGE_MAX = 40;
 
@@ -895,10 +948,15 @@ const CONTACTO = {
     return { max: null, texto: "Sin límite definido" };              // sobre 65 años
   }
 
-  function render(html, tipo) {
+  // tipo: "ok" (dentro del límite) | "no" (sobre el límite) | "info"
+  // opts.alt: muestra el enlace para conversar con el equipo
+  function render(html, tipo, opts) {
     $verd.className = "verdict " + tipo;
     const icon = tipo === "ok" ? "#i-check" : tipo === "no" ? "#i-x" : "#i-info";
     $verd.innerHTML = '<svg aria-hidden="true"><use href="' + icon + '"></use></svg><span>' + html + "</span>";
+    // El botón de agenda aparece únicamente si califica por IMC
+    $cta.hidden = tipo !== "ok";
+    $alt.hidden = !(opts && opts.alt);
   }
 
   function calcular() {
@@ -935,24 +993,32 @@ const CONTACTO = {
 
     if (lim.max === null) {
       $bar.style.background = "#A78BFA";
-      render("Tu IMC es <strong>" + imcTxt + "</strong>. Los requisitos del programa definen límites de IMC hasta los 65 años; sobre esa edad conversa tu caso con nuestro equipo.", "info");
+      render("Tu IMC es <strong>" + imcTxt + "</strong>. Los requisitos del programa definen límites de IMC hasta los 65 años; sobre esa edad conversa tu caso con nuestro equipo.",
+             "info", { alt: true });
       return;
     }
 
     if (imc < lim.max) {
       $bar.style.background = "#4ADE80";
-      render("Tu IMC es <strong>" + imcTxt + "</strong> y está dentro del límite de <strong>" + lim.max +
-             "</strong> para tu edad. El cumplimiento de los requisitos se confirma en la evaluación médica.", "ok");
+      render("<strong>Cumples el criterio de IMC.</strong> Tu IMC es <strong>" + imcTxt +
+             "</strong> y está dentro del límite de <strong>" + lim.max + "</strong> para tu edad. " +
+             "Agenda tu hora y confirmamos los demás requisitos en la evaluación médica.", "ok");
     } else {
       $bar.style.background = "#F87171";
       render("Tu IMC es <strong>" + imcTxt + "</strong> y supera el límite de <strong>" + lim.max +
              "</strong> para tu edad. Un IMC sobre el límite del grupo etario es un criterio de exclusión; " +
-             "nuestro equipo puede orientarte sobre los pasos previos.", "no");
+             "nuestro equipo puede orientarte sobre los pasos previos.", "no", { alt: true });
     }
   }
 
-  [$peso, $est, $edad].forEach(function (el) {
-    el.addEventListener("input", calcular);
+  // Deja pasar solo dígitos (y coma o punto en peso y estatura)
+  function sanear(el, permiteDecimal) {
+    const limpio = el.value.replace(permiteDecimal ? /[^\d.,]/g : /\D/g, "");
+    if (limpio !== el.value) el.value = limpio;
+  }
+
+  [[$peso, true], [$est, true], [$edad, false]].forEach(function (par) {
+    par[0].addEventListener("input", function () { sanear(par[0], par[1]); calcular(); });
   });
   document.getElementById("imc-form").addEventListener("submit", function (e) {
     e.preventDefault(); calcular();
