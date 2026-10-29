@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abdominoplastia con Bono PAD Fonasa | Clínica Made</title>
 <meta name="description" content="Abdominoplastia con Bono PAD Fonasa en Clínica Made: valor referencial $1.791.790 con Bono PAD. Conoce qué cubre, los requisitos, el cálculo de IMC y los beneficios de la cirugía.">
-<meta name="theme-color" content="#191633">
+<meta name="theme-color" content="#40B1AD">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Abdominoplastia con Bono PAD Fonasa | Clínica Made">
 <meta property="og:description" content="Precio fijo y conocido con Bono PAD Fonasa. Revisa qué cubre el bono, los requisitos de acceso y calcula tu IMC.">
@@ -13,41 +13,45 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 /* ============ TOKENS ============ */
 :root{
-  --paper:#FBF9F6;
-  --card:#FFFFFF;
-  --ink:#191633;
-  --ink-2:#3B3560;
-  --muted:#6E6889;
-  --line:#EAE3D9;
-  --line-soft:#F1ECE4;
+  /* Tipografías de marca: títulos con serif de itálica caligráfica, interfaz en sans geométrica.
+     Para cambiarlas basta reemplazar estas dos líneas (y el <link> de Google Fonts). */
+  --font-display:'Cormorant Garamond','Georgia',serif;
+  --font-ui:'Montserrat',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
 
-  --violet:#6B5BF0;
-  --violet-dark:#4B3CD1;
-  --violet-soft:#EFECFE;
-  --sand:#F4ECE1;
-  --gold:#A8792A;
-  --green:#1C8559;
-  --green-soft:#E7F3ED;
+  /* Colores de marca tomados del logo y la banda del sitio */
+  --teal:#40B1AD;        /* turquesa del logo */
+  --plum:#3E385D;        /* morado oscuro de los botones */
+
+  --paper:#FFFFFF;
+  --card:#FFFFFF;
+  --ink:#3E385D;
+  --ink-2:#565073;
+  --muted:#7D7894;
+  --line:#E5E7EE;
+  --line-soft:#F0F2F6;
+
+  --teal-dark:#26736F;   /* turquesa oscurecido, legible como texto */
+  --teal-soft:#E6F5F4;   /* fondo suave */
   --amber:#9A5B12;
   --amber-soft:#FDF3E3;
 
   --r-sm:10px;
   --r:16px;
   --r-lg:24px;
-  --shadow-sm:0 1px 2px rgba(25,22,51,.05), 0 4px 14px -6px rgba(25,22,51,.08);
-  --shadow:0 2px 4px rgba(25,22,51,.04), 0 18px 40px -20px rgba(25,22,51,.18);
+  --shadow-sm:0 1px 2px rgba(62,56,93,.05), 0 4px 14px -6px rgba(62,56,93,.08);
+  --shadow:0 2px 4px rgba(62,56,93,.04), 0 18px 40px -20px rgba(62,56,93,.18);
   --maxw:1120px;
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
-  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  font-family:var(--font-ui);
   background:var(--paper);
   color:var(--ink);
   line-height:1.6;
@@ -57,16 +61,17 @@ body{
 }
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
-::selection{background:var(--violet);color:#fff}
+::selection{background:var(--teal);color:#fff}
 
 .wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 16px}
 @media(min-width:720px){.wrap{padding:0 32px}}
 
-h1,h2,h3,.serif{font-family:'Fraunces','Georgia',serif;font-weight:600;line-height:1.1;letter-spacing:-.02em}
+h1,h2,h3,.serif{font-family:var(--font-display);font-weight:600;line-height:1.08;letter-spacing:-.005em}
+h1 em,h2 em,.serif em{font-style:italic;font-weight:500}
 .eyebrow{
   display:inline-flex;align-items:center;gap:8px;
   font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--violet-dark);
+  color:var(--teal-dark);
 }
 .eyebrow::before{content:"";width:18px;height:1px;background:currentColor;opacity:.5}
 .lead{font-size:17px;color:var(--ink-2)}
@@ -75,75 +80,88 @@ h1,h2,h3,.serif{font-family:'Fraunces','Georgia',serif;font-weight:600;line-heig
 /* ============ HEADER ============ */
 header{
   position:sticky;top:0;z-index:50;
-  background:rgba(251,249,246,.88);
+  background:rgba(255,255,255,.92);
   backdrop-filter:blur(14px);
   border-bottom:1px solid transparent;
   transition:border-color .25s, box-shadow .25s;
 }
-header.stuck{border-bottom-color:var(--line);box-shadow:0 6px 24px -18px rgba(25,22,51,.35)}
+header.stuck{border-bottom-color:var(--line);box-shadow:0 6px 24px -18px rgba(62,56,93,.35)}
 .nav{display:flex;align-items:center;justify-content:space-between;height:68px;gap:16px}
-.brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.brand-mark{
-  width:36px;height:36px;border-radius:11px;flex-shrink:0;
-  background:linear-gradient(145deg,var(--violet),#8B6BF5 60%,#A78BFA);
-  color:#fff;display:grid;place-items:center;
-  font-family:'Fraunces',serif;font-weight:600;font-size:19px;line-height:1;
-  box-shadow:0 6px 16px -8px rgba(107,91,240,.8);
+.brand{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.brand .leaf{width:17px;height:17px;color:var(--teal);align-self:flex-start;margin-top:3px;transform:rotate(-8deg)}
+.wordmark{
+  display:block;font-family:var(--font-display);font-style:italic;font-weight:600;
+  font-size:34px;line-height:.95;letter-spacing:-.01em;color:var(--teal);
 }
-.brand-txt strong{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
-.brand-txt span{display:block;font-size:10.5px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.wordmark em{font-style:normal}
+.tagline{
+  display:block;font-size:9.5px;font-weight:600;color:var(--muted);
+  letter-spacing:.22em;text-transform:uppercase;margin-top:2px;
+}
+
+/* Banda de campaña (mismo patrón del sitio: texto en itálica sobre turquesa) */
+.promo{background:var(--teal);color:#fff}
+.promo-inner{
+  display:flex;align-items:center;justify-content:center;gap:18px 26px;
+  flex-wrap:wrap;padding:14px 16px;text-align:center;
+}
+.promo p{font-family:var(--font-display);font-style:italic;font-size:21px;line-height:1.25;font-weight:500}
+.promo p strong{font-weight:600}
+@media(min-width:720px){.promo-inner{padding:14px 32px}}
 .nav-links{display:none;gap:28px;font-size:14px;font-weight:500;color:var(--ink-2)}
 @media(min-width:960px){.nav-links{display:flex}}
 .nav-links a{position:relative;padding:4px 0;transition:color .18s}
 .nav-links a::after{
   content:"";position:absolute;left:0;right:0;bottom:-2px;height:1.5px;
-  background:var(--violet);transform:scaleX(0);transform-origin:left;transition:transform .22s;
+  background:var(--teal);transform:scaleX(0);transform-origin:left;transition:transform .22s;
 }
-.nav-links a:hover{color:var(--violet-dark)}
+.nav-links a:hover{color:var(--teal-dark)}
 .nav-links a:hover::after{transform:scaleX(1)}
 .nav-links a.hot{
-  color:var(--violet-dark);font-weight:700;
-  background:var(--violet-soft);border-radius:999px;padding:5px 14px;margin:-5px 0;
+  color:var(--teal-dark);font-weight:700;
+  background:var(--teal-soft);border-radius:999px;padding:5px 14px;margin:-5px 0;
 }
 .nav-links a.hot::after{display:none}
-.nav-links a.hot:hover{background:#E4DEFE}
+.nav-links a.hot:hover{background:#D3EDEC}
 
 /* ============ BUTTONS ============ */
+/* Mayúsculas espaciadas, como los botones del sitio */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:9px;
-  font-family:inherit;font-size:15px;font-weight:600;
-  padding:13px 22px;border-radius:999px;border:1px solid transparent;
+  font-family:inherit;font-size:12.5px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.09em;
+  padding:14px 24px;border-radius:4px;border:1px solid transparent;
   cursor:pointer;transition:transform .16s, box-shadow .2s, background .2s, color .2s;
   white-space:nowrap;
 }
 .btn:active{transform:translateY(1px)}
-.btn-primary{background:var(--ink);color:#fff;box-shadow:0 10px 24px -14px rgba(25,22,51,.9)}
-.btn-primary:hover{background:#0F0D22;box-shadow:0 14px 30px -14px rgba(25,22,51,.95)}
-.btn-accent{background:var(--violet);color:#fff;box-shadow:0 10px 26px -12px rgba(107,91,240,.75)}
-.btn-accent:hover{background:var(--violet-dark)}
+.btn-primary{background:var(--ink);color:#fff;box-shadow:0 10px 24px -14px rgba(62,56,93,.9)}
+.btn-primary:hover{background:#2E2947;box-shadow:0 14px 30px -14px rgba(62,56,93,.95)}
+.btn-accent{background:var(--teal);color:#fff;box-shadow:0 10px 26px -12px rgba(64,177,173,.75)}
+.btn-accent:hover{background:var(--teal-dark)}
 .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
 .btn-ghost:hover{border-color:var(--ink);background:#fff}
 .btn-light{background:#fff;color:var(--ink);box-shadow:0 12px 30px -14px rgba(0,0,0,.6)}
-.btn-light:hover{background:#F3F0FF;color:var(--violet-dark)}
-.btn-sm{font-size:14px;padding:10px 18px}
-.btn svg{width:17px;height:17px;flex-shrink:0}
+.btn-light:hover{background:#E6F5F4;color:var(--teal-dark)}
+.btn-sm{font-size:11.5px;padding:12px 18px}
+.btn svg{width:16px;height:16px;flex-shrink:0}
 
 /* ============ HERO ============ */
 .hero{position:relative;padding:56px 0 72px;overflow:hidden}
 .hero::before,.hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none;z-index:0}
 .hero::before{
   width:620px;height:620px;top:-280px;right:-200px;
-  background:radial-gradient(circle,rgba(107,91,240,.14),rgba(107,91,240,0) 68%);
+  background:radial-gradient(circle,rgba(64,177,173,.14),rgba(64,177,173,0) 68%);
 }
 .hero::after{
   width:520px;height:520px;bottom:-300px;left:-220px;
-  background:radial-gradient(circle,rgba(184,146,90,.16),rgba(184,146,90,0) 70%);
+  background:radial-gradient(circle,rgba(64,177,173,.13),rgba(64,177,173,0) 70%);
 }
 .hero .wrap{position:relative;z-index:1}
 .hero-grid{display:grid;gap:40px;align-items:start}
 @media(min-width:960px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:56px}}
-.hero h1{font-size:clamp(38px,7.2vw,62px);margin:18px 0 0}
-.hero h1 em{font-style:normal;color:var(--violet-dark)}
+.hero h1{font-size:clamp(42px,7.6vw,66px);margin:18px 0 0}
+.hero h1 em{font-style:normal;color:var(--teal-dark)}
 .hero .lead{margin-top:20px;max-width:34em;font-size:clamp(16px,1.6vw,18px)}
 .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
 .trust{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
@@ -153,14 +171,14 @@ header.stuck{border-bottom-color:var(--line);box-shadow:0 6px 24px -18px rgba(25
   border-radius:999px;padding:7px 14px;font-size:13px;font-weight:500;color:var(--ink-2);
   box-shadow:var(--shadow-sm);
 }
-.chip svg{width:14px;height:14px;color:var(--green)}
+.chip svg{width:14px;height:14px;color:var(--teal-dark)}
 
 /* ---- price panel ---- */
 .price-panel{
   background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);
   padding:26px;box-shadow:var(--shadow);
 }
-.price-panel h2{font-size:19px;letter-spacing:-.01em}
+.price-panel h2{font-size:22px;letter-spacing:-.005em}
 .price-panel > p.small{margin-top:4px}
 .price-row{
   display:flex;align-items:baseline;justify-content:space-between;gap:14px;
@@ -168,15 +186,15 @@ header.stuck{border-bottom-color:var(--line);box-shadow:0 6px 24px -18px rgba(25
 }
 .price-row:last-of-type{border-bottom:none}
 .price-row .lbl{font-size:13.5px;color:var(--muted);font-weight:500}
-.price-row .val{font-family:'Fraunces',serif;font-size:24px;font-weight:600;letter-spacing:-.02em;white-space:nowrap}
+.price-row .val{font-family:var(--font-display);font-size:25px;font-weight:600;letter-spacing:-.01em;white-space:nowrap;font-variant-numeric:lining-nums tabular-nums;font-feature-settings:'lnum' 1,'tnum' 1}
 .price-row.old .val{color:var(--muted);text-decoration:line-through;text-decoration-thickness:1.5px}
 .price-hero{
-  margin-top:8px;background:linear-gradient(170deg,#211D42,#191633 55%,#241F47);
+  margin-top:8px;background:linear-gradient(170deg,#484170,#3E385D 55%,#332E4E);
   border-radius:var(--r);padding:22px;color:#fff;position:relative;overflow:hidden;
 }
 .price-hero::after{
   content:"";position:absolute;width:260px;height:260px;right:-120px;top:-140px;border-radius:50%;
-  background:radial-gradient(circle,rgba(167,139,250,.35),transparent 70%);
+  background:radial-gradient(circle,rgba(111,211,207,.35),transparent 70%);
 }
 .price-hero .tag{
   position:relative;display:inline-flex;align-items:center;gap:6px;
@@ -184,17 +202,18 @@ header.stuck{border-bottom-color:var(--line);box-shadow:0 6px 24px -18px rgba(25
   border-radius:999px;padding:5px 11px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
 }
 .price-hero .amount{
-  position:relative;font-family:'Fraunces',serif;font-size:clamp(34px,6vw,42px);
-  font-weight:600;letter-spacing:-.03em;margin-top:12px;line-height:1;
+  position:relative;font-family:var(--font-display);font-size:clamp(36px,6.4vw,46px);
+  font-weight:600;letter-spacing:-.02em;margin-top:12px;line-height:1;
+  font-variant-numeric:lining-nums tabular-nums;font-feature-settings:'lnum' 1,'tnum' 1;
 }
 .price-hero .note{position:relative;font-size:13px;color:rgba(255,255,255,.72);margin-top:8px}
 .save{
   display:flex;align-items:center;gap:10px;margin-top:16px;
-  background:var(--green-soft);border:1px solid rgba(28,133,89,.18);
+  background:var(--teal-soft);border:1px solid rgba(64,177,173,.18);
   border-radius:var(--r-sm);padding:11px 14px;
-  font-size:13.5px;font-weight:600;color:#14694A;
+  font-size:13.5px;font-weight:600;color:#1F6360;
 }
-.save svg{width:17px;height:17px;flex-shrink:0;color:var(--green)}
+.save svg{width:17px;height:17px;flex-shrink:0;color:var(--teal-dark)}
 .disclaimer{
   margin-top:16px;font-size:12px;line-height:1.55;color:var(--muted);
   padding-top:14px;border-top:1px solid var(--line-soft);
@@ -203,9 +222,9 @@ header.stuck{border-bottom-color:var(--line);box-shadow:0 6px 24px -18px rgba(25
 /* ============ SECTIONS ============ */
 section{scroll-margin-top:84px}
 .sec{padding:72px 0}
-.sec.alt{background:linear-gradient(180deg,#fff,#FDFBF8);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
+.sec.alt{background:linear-gradient(180deg,#fff,#F7FCFC);border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
 .sec-head{max-width:40em;margin-bottom:38px}
-.sec-head h2{font-size:clamp(27px,4.2vw,40px);margin-top:14px}
+.sec-head h2{font-size:clamp(30px,4.6vw,44px);margin-top:14px}
 .sec-head p{margin-top:14px;font-size:16.5px;color:var(--ink-2)}
 
 /* two definition cards */
@@ -215,13 +234,13 @@ section{scroll-margin-top:84px}
   background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);
   padding:30px 26px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;
 }
-.def::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(var(--violet),#A78BFA)}
+.def::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(var(--teal),#7FD9D5)}
 .def .icon{
   width:44px;height:44px;border-radius:13px;display:grid;place-items:center;
-  background:var(--violet-soft);color:var(--violet-dark);margin-bottom:18px;
+  background:var(--teal-soft);color:var(--teal-dark);margin-bottom:18px;
 }
 .def .icon svg{width:22px;height:22px}
-.def h3{font-size:22px}
+.def h3{font-size:25px}
 .def p{margin-top:12px;color:var(--ink-2);font-size:15.5px}
 
 /* coverage list */
@@ -234,10 +253,10 @@ section{scroll-margin-top:84px}
   padding:18px;box-shadow:var(--shadow-sm);
   transition:transform .2s, box-shadow .2s, border-color .2s;
 }
-.cover:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:rgba(107,91,240,.3)}
+.cover:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:rgba(64,177,173,.3)}
 .cover .tick{
   width:26px;height:26px;border-radius:50%;flex-shrink:0;margin-top:1px;
-  background:var(--green-soft);color:var(--green);display:grid;place-items:center;
+  background:var(--teal-soft);color:var(--teal-dark);display:grid;place-items:center;
 }
 .cover .tick svg{width:14px;height:14px}
 .cover p{font-size:15px;color:var(--ink-2);font-weight:500}
@@ -269,7 +288,7 @@ section{scroll-margin-top:84px}
   background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);
   padding:24px;box-shadow:var(--shadow-sm);
 }
-.imc-table h3{font-size:18px}
+.imc-table h3{font-size:21px}
 .imc-table table{width:100%;border-collapse:collapse;margin-top:16px}
 .imc-table th{
   text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
@@ -278,40 +297,41 @@ section{scroll-margin-top:84px}
 .imc-table td{padding:14px 0;border-bottom:1px solid var(--line-soft);font-size:15px;color:var(--ink-2)}
 .imc-table tr:last-child td{border-bottom:none}
 .imc-table td.v{
-  text-align:right;font-family:'Fraunces',serif;font-size:20px;font-weight:600;
+  text-align:right;font-family:var(--font-display);font-size:22px;font-weight:600;
   color:var(--ink);white-space:nowrap;
+  font-variant-numeric:lining-nums tabular-nums;font-feature-settings:'lnum' 1,'tnum' 1;
 }
 .formula{
-  margin-top:20px;background:var(--sand);border-radius:var(--r-sm);padding:16px;
-  font-size:14px;color:#5B4A33;
+  margin-top:20px;background:var(--teal-soft);border-radius:var(--r-sm);padding:16px;
+  font-size:14px;color:#4A4566;
 }
 .formula code{
-  display:block;font-family:'Fraunces',serif;font-size:16px;font-weight:600;
+  display:block;font-family:var(--font-display);font-size:16px;font-weight:600;
   color:var(--ink);margin-bottom:8px;letter-spacing:-.01em;
 }
 
 /* calculadora — sección protagonista */
 .calc-sec{
   position:relative;padding-top:8px;
-  background:linear-gradient(180deg,rgba(244,236,225,.45),rgba(251,249,246,0) 55%);
+  background:linear-gradient(180deg,rgba(230,245,244,.85),rgba(255,255,255,0) 55%);
 }
 .calc-head{max-width:36em;margin:0 auto 32px;text-align:center}
 .calc-head .eyebrow{justify-content:center}
-.calc-head h2{font-size:clamp(29px,4.6vw,44px);margin-top:14px}
+.calc-head h2{font-size:clamp(32px,5vw,48px);margin-top:14px}
 .calc-head p{margin-top:16px;font-size:17px;color:var(--ink-2)}
 .calc{
-  background:linear-gradient(165deg,#211D42,#191633 60%,#231E45);
+  background:linear-gradient(165deg,#484170,#3E385D 60%,#332E4E);
   border-radius:var(--r-lg);padding:30px 24px;color:#fff;position:relative;overflow:hidden;
-  box-shadow:0 30px 60px -36px rgba(25,22,51,.9);
+  box-shadow:0 30px 60px -36px rgba(62,56,93,.9);
 }
 @media(min-width:760px){.calc{padding:40px}}
 .calc::before{
   content:"";position:absolute;width:420px;height:420px;right:-180px;bottom:-240px;border-radius:50%;
-  background:radial-gradient(circle,rgba(167,139,250,.28),transparent 70%);
+  background:radial-gradient(circle,rgba(111,211,207,.28),transparent 70%);
 }
 .calc-inner{position:relative;display:grid;gap:30px}
 @media(min-width:860px){.calc-inner{grid-template-columns:.95fr 1.05fr;gap:44px;align-items:center}}
-.calc-title{font-size:22px;color:#fff}
+.calc-title{font-size:25px;color:#fff}
 .calc p.sub{color:rgba(255,255,255,.72);font-size:15px;margin-top:12px}
 .fields{display:grid;gap:14px;grid-template-columns:1fr 1fr;margin-top:24px}
 .field{display:flex;flex-direction:column;gap:7px}
@@ -326,7 +346,7 @@ section{scroll-margin-top:84px}
 }
 .field input::-webkit-outer-spin-button,.field input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .field input::placeholder{color:rgba(255,255,255,.35);font-weight:400}
-.field input:focus{border-color:#A78BFA;background:rgba(255,255,255,.12)}
+.field input:focus{border-color:#7FD9D5;background:rgba(255,255,255,.12)}
 .unit{
   position:absolute;right:14px;top:50%;transform:translateY(-50%);
   font-size:13px;font-weight:600;color:rgba(255,255,255,.45);pointer-events:none;
@@ -339,12 +359,13 @@ section{scroll-margin-top:84px}
 }
 .result .rlbl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:700}
 .result .rnum{
-  font-family:'Fraunces',serif;font-size:clamp(56px,9vw,72px);font-weight:600;line-height:1;
-  letter-spacing:-.03em;margin-top:10px;font-variant-numeric:tabular-nums;
+  font-family:var(--font-display);font-size:clamp(56px,9vw,72px);font-weight:600;line-height:1;
+  letter-spacing:-.02em;margin-top:10px;
+  font-variant-numeric:lining-nums tabular-nums;font-feature-settings:'lnum' 1,'tnum' 1;
 }
 .result .rnum span{font-size:20px;color:rgba(255,255,255,.5);margin-left:6px;letter-spacing:0}
 .gauge{position:relative;height:6px;border-radius:99px;background:rgba(255,255,255,.14);margin:20px 0 10px;overflow:hidden}
-.gauge i{display:block;height:100%;width:0;border-radius:99px;background:#A78BFA;transition:width .5s cubic-bezier(.2,.7,.2,1), background .3s}
+.gauge i{display:block;height:100%;width:0;border-radius:99px;background:#7FD9D5;transition:width .5s cubic-bezier(.2,.7,.2,1), background .3s}
 .gauge b{
   position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;
   background:rgba(255,255,255,.75);transition:left .5s cubic-bezier(.2,.7,.2,1);
@@ -360,12 +381,12 @@ section{scroll-margin-top:84px}
   background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
 }
 .verdict svg{width:18px;height:18px;flex-shrink:0;margin-top:2px}
-.verdict.ok{background:rgba(28,133,89,.18);border-color:rgba(74,222,128,.35);color:#D6F5E4}
-.verdict.ok svg{color:#4ADE80}
-.verdict.no{background:rgba(239,68,68,.15);border-color:rgba(248,113,113,.35);color:#FDDADA}
-.verdict.no svg{color:#F87171}
+.verdict.ok{background:rgba(64,177,173,.18);border-color:rgba(111,211,207,.35);color:#D8F3F2}
+.verdict.ok svg{color:#6FD3CF}
+.verdict.no{background:rgba(217,84,76,.15);border-color:rgba(240,140,133,.35);color:#FBDEDC}
+.verdict.no svg{color:#F08C85}
 .verdict.info{color:rgba(255,255,255,.75)}
-.verdict.info svg{color:#C4B8FF}
+.verdict.info svg{color:#9FE0DD}
 .verdict strong{font-weight:700}
 
 /* CTA de agenda: solo visible cuando el IMC está dentro del límite */
@@ -392,8 +413,8 @@ section{scroll-margin-top:84px}
   padding:20px;box-shadow:var(--shadow-sm);
 }
 .ex .num{
-  font-family:'Fraunces',serif;font-size:26px;font-weight:600;line-height:1;
-  color:#D9CFC1;flex-shrink:0;min-width:26px;letter-spacing:-.02em;
+  font-family:var(--font-display);font-size:26px;font-weight:600;line-height:1;
+  color:#BFD9D7;flex-shrink:0;min-width:26px;letter-spacing:-.02em;
 }
 .ex p{font-size:15px;color:var(--ink-2);font-weight:500}
 
@@ -409,10 +430,10 @@ section{scroll-margin-top:84px}
 .ben:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
 .ben .icon{
   width:42px;height:42px;border-radius:12px;display:grid;place-items:center;margin-bottom:16px;
-  background:var(--sand);color:var(--gold);
+  background:var(--teal-soft);color:var(--teal-dark);
 }
 .ben .icon svg{width:21px;height:21px}
-.ben h3{font-size:18px;line-height:1.25}
+.ben h3{font-size:20px;line-height:1.22}
 .ben p{margin-top:9px;font-size:14.5px;color:var(--muted)}
 
 /* CTA final */
@@ -425,10 +446,10 @@ section{scroll-margin-top:84px}
 @media(min-width:760px){.cta-box{padding:56px 48px}}
 .cta-box::before{
   content:"";position:absolute;width:520px;height:520px;left:50%;top:-360px;transform:translateX(-50%);
-  border-radius:50%;background:radial-gradient(circle,rgba(107,91,240,.13),transparent 68%);
+  border-radius:50%;background:radial-gradient(circle,rgba(64,177,173,.13),transparent 68%);
 }
 .cta-box > *{position:relative}
-.cta-box h2{font-size:clamp(27px,4.2vw,38px);margin-top:14px}
+.cta-box h2{font-size:clamp(30px,4.6vw,42px);margin-top:14px}
 .cta-box p{margin:16px auto 0;max-width:40em;color:var(--ink-2);font-size:16.5px}
 .cta-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:28px}
 
@@ -436,8 +457,9 @@ section{scroll-margin-top:84px}
 footer{background:var(--ink);color:rgba(255,255,255,.62);padding:48px 0 36px;font-size:13.5px}
 .foot-grid{display:grid;gap:28px}
 @media(min-width:800px){.foot-grid{grid-template-columns:1.2fr 1fr;gap:56px}}
-footer .brand-txt strong{color:#fff}
-footer .brand-txt span{color:rgba(255,255,255,.45)}
+footer .wordmark{color:#7FD9D5}
+footer .leaf{color:#7FD9D5}
+footer .tagline{color:rgba(255,255,255,.5)}
 .foot-note{margin-top:18px;line-height:1.65;max-width:46em}
 .foot-list{display:flex;flex-direction:column;gap:9px}
 .foot-list strong{
@@ -480,6 +502,10 @@ footer .brand-txt span{color:rgba(255,255,255,.45)}
     <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 11v5.5M12 7.6h.01" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M15 9l-6 6m0-6 6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-7 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24">
+      <path d="M20.5 2.2c.6 7.9-2.1 13-8 15.3-1.9.7-3.7.6-5.3-.4C8.6 9.7 13.1 4.7 20.5 2.2Z" fill="currentColor"/>
+      <path d="M3.8 21.6C5.2 16.4 8.9 11.7 14.4 8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+    </symbol>
   </defs>
 </svg>
 
@@ -487,10 +513,10 @@ footer .brand-txt span{color:rgba(255,255,255,.45)}
 <header id="hdr">
   <div class="wrap nav">
     <a class="brand" href="#top" aria-label="Clínica Made — inicio">
-      <span class="brand-mark" aria-hidden="true">M</span>
+      <svg class="leaf" aria-hidden="true"><use href="#i-leaf"></use></svg>
       <span class="brand-txt">
-        <strong>Clínica Made</strong>
-        <span>Cirugía Plástica</span>
+        <span class="wordmark">made<em>.</em></span>
+        <span class="tagline">Cirugía Plástica</span>
       </span>
     </a>
     <nav class="nav-links" aria-label="Secciones">
@@ -500,11 +526,19 @@ footer .brand-txt span{color:rgba(255,255,255,.45)}
       <a href="#requisitos">Requisitos</a>
       <a href="#beneficios">Beneficios</a>
     </nav>
-    <a class="btn btn-accent btn-sm" data-cta="agenda" href="#">
+    <a class="btn btn-primary btn-sm" data-cta="agenda" href="#">
       Agendar hora
     </a>
   </div>
 </header>
+
+<!-- ===== BANDA DE CAMPAÑA ===== -->
+<div class="promo">
+  <div class="wrap promo-inner">
+    <p>Accede a tu cirugía de abdomen flácido con cobertura de <strong>FONASA</strong></p>
+    <a class="btn btn-primary btn-sm" href="#calculadora">Conoce si calificas</a>
+  </div>
+</div>
 
 <main id="top">
 
@@ -780,8 +814,8 @@ footer .brand-txt span{color:rgba(255,255,255,.45)}
           <h3>Bienestar integral</h3>
           <p>Mejora de la calidad de vida y el bienestar físico y psicológico.</p>
         </article>
-        <article class="ben rv" style="background:linear-gradient(165deg,#F6F3FF,#FFFFFF);border-color:rgba(107,91,240,.22)">
-          <div class="icon" style="background:var(--violet-soft);color:var(--violet-dark)"><svg aria-hidden="true"><use href="#i-shield"></use></svg></div>
+        <article class="ben rv" style="background:linear-gradient(165deg,#EFFAF9,#FFFFFF);border-color:rgba(64,177,173,.22)">
+          <div class="icon" style="background:var(--teal-soft);color:var(--teal-dark)"><svg aria-hidden="true"><use href="#i-shield"></use></svg></div>
           <h3>Acompañamiento Made</h3>
           <p>Evaluación previa, equipo quirúrgico y controles postoperatorios incluidos en el bono.</p>
         </article>
@@ -801,7 +835,7 @@ footer .brand-txt span{color:rgba(255,255,255,.45)}
           la cirugía y la recuperación.
         </p>
         <div class="cta-actions">
-          <a class="btn btn-accent" data-cta="agenda-online" href="#">
+          <a class="btn btn-primary" data-cta="agenda-online" href="#">
             <svg aria-hidden="true"><use href="#i-cal"></use></svg>
             Agendar hora · Bono PAD Abdomen Flácido
           </a>
@@ -811,7 +845,7 @@ footer .brand-txt span{color:rgba(255,255,255,.45)}
           </a>
         </div>
         <p class="small" style="margin-top:18px">
-          ¿Aún no sabes si calificas? <a href="#calculadora" style="color:var(--violet-dark);font-weight:600;text-decoration:underline;text-underline-offset:3px">Calcula tu IMC</a>.
+          ¿Aún no sabes si calificas? <a href="#calculadora" style="color:var(--teal-dark);font-weight:600;text-decoration:underline;text-underline-offset:3px">Calcula tu IMC</a>.
         </p>
         <p class="small" style="margin-top:22px">
           Valores referenciales. Sujeto a evaluación médica y a las condiciones vigentes del programa PAD de Fonasa.
@@ -827,8 +861,11 @@ footer .brand-txt span{color:rgba(255,255,255,.45)}
     <div class="foot-grid">
       <div>
         <div class="brand">
-          <span class="brand-mark" aria-hidden="true">M</span>
-          <span class="brand-txt"><strong>Clínica Made</strong><span>Cirugía Plástica</span></span>
+          <svg class="leaf" aria-hidden="true"><use href="#i-leaf"></use></svg>
+          <span class="brand-txt">
+            <span class="wordmark">made<em>.</em></span>
+            <span class="tagline">Cirugía Plástica</span>
+          </span>
         </div>
         <p class="foot-note">
           La información de esta página tiene carácter informativo y no constituye una indicación
@@ -986,25 +1023,25 @@ const CONTACTO = {
     $bar.style.width = Math.max(2, posEnBarra(imc)) + "%";
 
     if (!edad) {
-      $bar.style.background = "#A78BFA";
+      $bar.style.background = "#7FD9D5";
       render("Tu IMC es <strong>" + imcTxt + "</strong>. Ingresa tu edad para comparar con el límite que corresponde a tu grupo etario.", "info");
       return;
     }
 
     if (lim.max === null) {
-      $bar.style.background = "#A78BFA";
+      $bar.style.background = "#7FD9D5";
       render("Tu IMC es <strong>" + imcTxt + "</strong>. Los requisitos del programa definen límites de IMC hasta los 65 años; sobre esa edad conversa tu caso con nuestro equipo.",
              "info", { alt: true });
       return;
     }
 
     if (imc < lim.max) {
-      $bar.style.background = "#4ADE80";
+      $bar.style.background = "#6FD3CF";
       render("<strong>Cumples el criterio de IMC.</strong> Tu IMC es <strong>" + imcTxt +
              "</strong> y está dentro del límite de <strong>" + lim.max + "</strong> para tu edad. " +
              "Agenda tu hora y confirmamos los demás requisitos en la evaluación médica.", "ok");
     } else {
-      $bar.style.background = "#F87171";
+      $bar.style.background = "#F08C85";
       render("Tu IMC es <strong>" + imcTxt + "</strong> y supera el límite de <strong>" + lim.max +
              "</strong> para tu edad. Un IMC sobre el límite del grupo etario es un criterio de exclusión; " +
              "nuestro equipo puede orientarte sobre los pasos previos.", "no", { alt: true });
